@@ -1,0 +1,55 @@
+.form-fields {
+    display: flex;
+    align-items: center;
+}
+
+.form-fields-content .form-fields .ant-form-item-row {
+    flex-direction: column;
+}
+.form-fields-content .form-fields {
+    padding-bottom: 25px;
+    justify-content: space-around;
+}
+
+.form-fields-content .form-fields {
+    gap: 40px;
+
+}
+.form-fields-content .form-fields .ant-form-item-row {
+    flex-direction: column;
+}
+.form-fields-content .form-fields .ant-form-item-label {
+    text-align: center;
+}
+.form-fields-content {
+    margin: 20px 0px;
+    border-bottom: 1px solid #c1bcbc6e;
+}
+.form-fields-content .form-fields  .ant-form-item-control-input {
+    min-height: 20px;
+}
+.form-fields-content .form-fields .ant-form-item {
+    width: 100%;
+}
+.ant-col.form-fields {gap: 40px;}
+
+.form-fields-content .form-fields .ant-form-item-label {
+    text-align: left;
+}
+.form-fields-content .form-fields .ant-form-item-row .ant-select-selector {
+    height: 35px;
+}
+.form-fields-content .form-fields .ant-form-item .ant-input {
+    height: 35px;
+}
+.form-fields-content .form-fields .ant-form-item .ant-picker {
+    width: 100%;
+    max-width: 224px;
+    height: 35px;
+}
+
+.ant-col.form-fields.communication-field .ant-form-item {
+    width: 100%;
+    max-width: 46%;
+   
+}

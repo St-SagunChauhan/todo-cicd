@@ -1,0 +1,32 @@
+export type IBids = {
+  bidId?: string;
+  projectName?: string;
+  upworkId?: string;
+  accountTypes: string | null;
+  jobUrl?: string;
+  jobdescription?: string;
+  connects?: string;
+  projectUrl?: string;
+  clientName?: string;
+  countryName?: string;
+  hiredProfile?: string;
+  email?: string;
+  mobile?: string;
+  communicationProfile?: string;
+  departmentName?: string;
+  contracType?: string;
+  weeklyHours?: string;
+  status?: string | null;
+  startDate?: string;
+  isActive?: boolean;
+  billingStatus?: string | null;
+  billingType?: string | null;
+  amountSpent?: string | null;
+  marketPlaceAccount?: string | null;
+  department?: string | null;
+};
+export type IBidsResponse = {
+  message: string;
+  status: number;
+  data: any;
+};

@@ -1,0 +1,598 @@
+﻿USE [STCRM_DB]
+GO
+/****** Object:  Table [dbo].[Attendence]    Script Date: 4/21/2023 7:11:18 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Attendence](
+	[Id] [uniqueidentifier] NOT NULL,
+	[EmployeeId] [uniqueidentifier] NULL,
+	[ShortLeave] [int] NULL,
+	[HalfDayLeave] [int] NULL,
+	[CasualLeave] [int] NULL,
+	[SickLeave] [int] NULL,
+	[Salary] [decimal](18, 0) NULL,
+	[Date] [datetime] NULL,
+ CONSTRAINT [PK_Attendence] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Clients]    Script Date: 4/21/2023 7:11:18 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Clients](
+	[ClientId] [uniqueidentifier] NOT NULL,
+	[ClientName] [nvarchar](50) NULL,
+	[ClientEmail] [nvarchar](50) NULL,
+	[ContactNo] [nvarchar](50) NULL,
+	[Country] [nvarchar](max) NULL,
+	[Communication] [nvarchar](50) NULL,
+	[TimeZone] [datetimeoffset](7) NULL,
+	[CreatedDate] [datetime] NULL,
+	[CreatedBy] [uniqueidentifier] NULL,
+	[LastModified] [datetime] NULL,
+	[LastModifiedBy] [uniqueidentifier] NULL,
+	[IsActive] [bit] NULL,
+	[DepartmentId] [uniqueidentifier] NULL,
+	[MarketPlaceAccountsId] [uniqueidentifier] NULL,
+ CONSTRAINT [PK_Clients] PRIMARY KEY CLUSTERED 
+(
+	[ClientId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Connects]    Script Date: 4/21/2023 7:11:18 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Connects](
+	[ConnectId] [uniqueidentifier] NOT NULL,
+	[EmployeeId] [uniqueidentifier] NULL,
+	[DepartmentId] [uniqueidentifier] NULL,
+	[MarketPlaceAccountsId] [uniqueidentifier] NULL,
+	[Connect_Date] [date] NULL,
+	[ConnectUsed] [int] NULL,
+	[Week] [int] NULL,
+	[CreatedDate] [datetime] NULL,
+	[CreatedBy] [uniqueidentifier] NULL,
+	[LastModified] [datetime] NULL,
+	[LastModifiedBy] [uniqueidentifier] NULL,
+ CONSTRAINT [PK_Connects] PRIMARY KEY CLUSTERED 
+(
+	[ConnectId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Departments]    Script Date: 4/21/2023 7:11:18 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Departments](
+	[DepartmentId] [uniqueidentifier] NOT NULL,
+	[DepartmentName] [nvarchar](50) NULL,
+	[CreatedDate] [datetime] NULL,
+	[CreatedBy] [uniqueidentifier] NULL,
+	[LastModified] [datetime] NULL,
+	[LastModifiedBy] [uniqueidentifier] NULL,
+	[IsActive] [bit] NULL,
+ CONSTRAINT [PK_Departments] PRIMARY KEY CLUSTERED 
+(
+	[DepartmentId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[EmployeeDocuments]    Script Date: 4/21/2023 7:11:18 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[EmployeeDocuments](
+	[EmpDocId] [uniqueidentifier] NOT NULL,
+	[EmpId] [uniqueidentifier] NOT NULL,
+	[Name] [nvarchar](50) NOT NULL,
+	[Number] [nvarchar](50) NOT NULL,
+	[Image] [binary](50) NOT NULL,
+	[CreatedDate] [datetime] NULL,
+	[CreatedBy] [uniqueidentifier] NULL,
+	[LastModified] [datetime] NULL,
+	[LastModifiedBy] [uniqueidentifier] NULL,
+ CONSTRAINT [PK_Employee Documents] PRIMARY KEY CLUSTERED 
+(
+	[EmpDocId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[EmployeeProjects]    Script Date: 4/21/2023 7:11:18 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[EmployeeProjects](
+	[EmpProjectId] [uniqueidentifier] NOT NULL,
+	[EmployeeId] [uniqueidentifier] NULL,
+	[ProjectId] [uniqueidentifier] NULL,
+	[BillingHour] [decimal](18, 0) NULL,
+	[UnBillingHour] [decimal](18, 0) NULL,
+	[CreatedDate] [datetime] NULL,
+	[CreatedBy] [uniqueidentifier] NULL,
+	[LastModified] [datetime] NULL,
+	[LastModifiedBy] [uniqueidentifier] NULL,
+	[IsActive] [bit] NULL,
+ CONSTRAINT [PK_EmployeeProject] PRIMARY KEY CLUSTERED 
+(
+	[EmpProjectId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Employees]    Script Date: 4/21/2023 7:11:18 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Employees](
+	[EmployeeId] [uniqueidentifier] NOT NULL,
+	[Password] [nvarchar](200) NULL,
+	[FirstName] [nvarchar](50) NULL,
+	[LastName] [nvarchar](50) NULL,
+	[Address] [nvarchar](50) NULL,
+	[Email] [nvarchar](50) NULL,
+	[DepartmentId] [uniqueidentifier] NULL,
+	[MobileNo] [nvarchar](50) NULL,
+	[Gender] [nvarchar](50) NULL,
+	[Role] [nvarchar](50) NULL,
+	[ShiftType] [int] NULL,
+	[EmergencyNumber] [nvarchar](50) NULL,
+	[DOB] [datetime] NULL,
+	[ProfilePicture] [nvarchar](max) NULL,
+	[EmployeeNumber] [nvarchar](50) NULL,
+	[JoiningDate] [datetime] NULL,
+	[ResignationDate] [datetime] NULL,
+	[SickLeaves] [int] NULL,
+	[CasualLeaves] [int] NULL,
+	[AssignedTo] [uniqueidentifier] NULL,
+	[CreatedDate] [datetime] NULL,
+	[CreatedBy] [uniqueidentifier] NULL,
+	[LastModified] [datetime] NULL,
+	[LastModifiedBy] [uniqueidentifier] NULL,
+	[IsActive] [bit] NULL,
+ CONSTRAINT [PK_TblEmployeeMaster] PRIMARY KEY CLUSTERED 
+(
+	[EmployeeId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[EmployeeSalaries]    Script Date: 4/21/2023 7:11:18 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[EmployeeSalaries](
+	[SalaryId] [uniqueidentifier] NOT NULL,
+	[EmployeeId] [uniqueidentifier] NOT NULL,
+	[BasicSalary] [decimal](18, 0) NULL,
+	[Bonus] [decimal](18, 0) NULL,
+	[DA] [decimal](18, 0) NULL,
+	[HRA] [decimal](18, 0) NULL,
+	[LearningAllowance] [decimal](18, 0) NULL,
+	[UniformAllowance] [decimal](18, 0) NULL,
+	[ConveyanceAllowance] [decimal](18, 0) NULL,
+	[ProjectLevelBonus] [decimal](18, 0) NULL,
+	[GrossSalary] [nvarchar](50) NULL,
+	[AccountNumber] [nvarchar](max) NULL,
+	[IfscCode] [nvarchar](50) NULL,
+	[BankName] [nvarchar](50) NULL,
+	[EPFApplicable] [nvarchar](20) NULL,
+	[ESIApplicable] [nvarchar](20) NULL,
+	[UANNo] [nvarchar](50) NULL,
+	[ESINo] [nvarchar](50) NULL,
+	[CreatedDate] [datetime] NULL,
+	[CreatedBy] [uniqueidentifier] NULL,
+	[LastModified] [datetime] NULL,
+	[LastModifiedBy] [uniqueidentifier] NULL,
+	[IsActive] [bit] NULL,
+ CONSTRAINT [PK_EmployeeSalaries] PRIMARY KEY CLUSTERED 
+(
+	[SalaryId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Leaves]    Script Date: 4/21/2023 7:11:18 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Leaves](
+	[Id] [uniqueidentifier] NOT NULL,
+	[EmployeeId] [uniqueidentifier] NULL,
+	[LeaveType] [int] NULL,
+	[Date] [datetime] NULL,
+	[Reason] [nvarchar](max) NULL,
+	[Status] [int] NULL,
+	[CreatedDate] [datetime] NULL,
+	[CreatedBy] [uniqueidentifier] NULL,
+	[LastModifiedBy] [uniqueidentifier] NULL,
+	[LastModified] [datetime] NULL,
+	[IsActive] [bit] NULL,
+	[End_Date] [datetime] NULL,
+ CONSTRAINT [PK_Leaves] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[MarketPlaceAccounts]    Script Date: 4/21/2023 7:11:18 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[MarketPlaceAccounts](
+	[Id] [uniqueidentifier] NOT NULL,
+	[Name] [nvarchar](50) NULL,
+	[CreatedDate] [datetime] NULL,
+	[CreatedBy] [uniqueidentifier] NULL,
+	[LastModified] [datetime] NULL,
+	[LastModifiedBy] [uniqueidentifier] NULL,
+	[IsActive] [bit] NULL,
+	[UserName] [nvarchar](max) NULL,
+	[Accounts] [int] NULL,
+ CONSTRAINT [PK_UpworkDetails] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[ProjectBillings]    Script Date: 4/21/2023 7:11:18 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ProjectBillings](
+	[BillingId] [uniqueidentifier] NOT NULL,
+	[MarketPlaceAccountId] [uniqueidentifier] NULL,
+	[HourBilled] [decimal](18, 0) NULL,
+	[Week] [int] NULL,
+	[BillingDate] [date] NULL,
+	[CreatedDate] [datetime] NULL,
+	[CreatedBy] [uniqueidentifier] NULL,
+	[LastModified] [datetime] NULL,
+	[LastModifiedBy] [uniqueidentifier] NULL,
+	[isActive] [bit] NULL,
+	[ProjectDepartmentId] [uniqueidentifier] NULL,
+ CONSTRAINT [PK_ProjectBillings] PRIMARY KEY CLUSTERED 
+(
+	[BillingId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[ProjectDepartments]    Script Date: 4/21/2023 7:11:18 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ProjectDepartments](
+	[Id] [uniqueidentifier] NOT NULL,
+	[ProjectId] [uniqueidentifier] NULL,
+	[DepartmentId] [uniqueidentifier] NULL,
+	[CreatedDate] [datetime] NULL,
+	[CreatedBy] [uniqueidentifier] NULL,
+	[LastModified] [datetime] NULL,
+	[LastModifiedBy] [uniqueidentifier] NULL,
+	[IsActive] [bit] NULL,
+ CONSTRAINT [PK_ProjectDepartment] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[ProjectHealth]    Script Date: 4/21/2023 7:11:18 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ProjectHealth](
+	[Id] [uniqueidentifier] NOT NULL,
+	[ProjectHealthRate] [int] NULL,
+	[Comments] [nvarchar](max) NULL,
+	[Date] [datetime] NULL,
+	[EmployeeId] [uniqueidentifier] NULL,
+	[ProjectId] [uniqueidentifier] NULL,
+	[CreatedDate] [datetime] NULL,
+	[CreatedBy] [uniqueidentifier] NULL,
+	[LastModified] [datetime] NULL,
+	[LastModifiedBy] [uniqueidentifier] NULL,
+ CONSTRAINT [PK_ProjectHealth] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Projects]    Script Date: 4/21/2023 7:11:18 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Projects](
+	[ProjectId] [uniqueidentifier] NOT NULL,
+	[ClientId] [uniqueidentifier] NULL,
+	[Accounts] [int] NULL,
+	[ContractName] [nvarchar](50) NULL,
+	[ContractType] [int] NULL,
+	[HoursPerWeek] [nvarchar](50) NULL,
+	[BillingType] [int] NULL,
+	[CreatedDate] [datetime] NULL,
+	[CreatedBy] [uniqueidentifier] NULL,
+	[LastModified] [datetime] NULL,
+	[LastModifiedBy] [uniqueidentifier] NULL,
+	[Status] [int] NULL,
+	[IsActive] [bit] NULL,
+	[EndDate] [datetime] NULL,
+	[ProjectReview] [nvarchar](50) NULL,
+	[ProjectUrl] [nvarchar](max) NULL,
+	[Rating] [decimal](18, 2) NULL,
+	[StartDate] [datetime] NULL,
+ CONSTRAINT [PK_ProjectDetails] PRIMARY KEY CLUSTERED 
+(
+	[ProjectId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Upwork]    Script Date: 4/21/2023 7:11:18 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Upwork](
+	[UpworkId] [uniqueidentifier] NOT NULL,
+	[UpworkName] [nvarchar](50) NULL,
+	[IsActive] [bit] NULL,
+	[CreatedDate] [datetime] NULL,
+	[CreatedBy] [uniqueidentifier] NULL,
+	[LastModified] [datetime] NULL,
+	[LastModifiedBy] [uniqueidentifier] NULL,
+ CONSTRAINT [PK_Upwork] PRIMARY KEY CLUSTERED 
+(
+	[UpworkId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+INSERT [dbo].[Clients] ([ClientId], [ClientName], [ClientEmail], [ContactNo], [Country], [Communication], [TimeZone], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive], [DepartmentId], [MarketPlaceAccountsId]) VALUES (N'847f3865-59c9-4fbe-fafe-08dafd1b5af0', N'Ian Bray', N'fygacenahu@mailinator.commmmmm', N'8894339436657567565', N'India', N'Skype', NULL, CAST(N'2023-01-23T13:55:15.827' AS DateTime), NULL, CAST(N'2023-04-12T22:29:49.690' AS DateTime), N'f22b7010-9dee-4eb9-6077-08db3b60dcbe', 0, NULL, NULL)
+INSERT [dbo].[Clients] ([ClientId], [ClientName], [ClientEmail], [ContactNo], [Country], [Communication], [TimeZone], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive], [DepartmentId], [MarketPlaceAccountsId]) VALUES (N'77b34938-e2ff-493c-21cc-08dafd5576d6', N'Cisco', N'cisco@gmail.com', N'2545254522', N'Francisco, USA', N'Skype', NULL, CAST(N'2023-01-23T21:07:25.077' AS DateTime), NULL, CAST(N'2023-04-13T15:42:00.187' AS DateTime), NULL, 1, NULL, NULL)
+INSERT [dbo].[Clients] ([ClientId], [ClientName], [ClientEmail], [ContactNo], [Country], [Communication], [TimeZone], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive], [DepartmentId], [MarketPlaceAccountsId]) VALUES (N'8825d4b1-fa4b-49ae-1e6e-08db31f6443d', N'Rahul', N'Rahul@gmail.com', N'4578547854', N'IN', N'Skype', CAST(N'2023-03-31T14:42:33.7280000+00:00' AS DateTimeOffset), CAST(N'2023-03-31T20:13:18.017' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', CAST(N'2023-04-14T17:51:58.500' AS DateTime), NULL, 0, NULL, NULL)
+INSERT [dbo].[Clients] ([ClientId], [ClientName], [ClientEmail], [ContactNo], [Country], [Communication], [TimeZone], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive], [DepartmentId], [MarketPlaceAccountsId]) VALUES (N'7362513d-1278-4566-837a-08db35c98ee4', N'Aman', N'aman@gmail.com', N'7498645', N'India', N'Skype', NULL, CAST(N'2023-04-05T17:03:20.513' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', CAST(N'2023-04-13T14:38:26.763' AS DateTime), NULL, 1, NULL, NULL)
+INSERT [dbo].[Clients] ([ClientId], [ClientName], [ClientEmail], [ContactNo], [Country], [Communication], [TimeZone], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive], [DepartmentId], [MarketPlaceAccountsId]) VALUES (N'c7af5322-5663-4dd8-8bef-08db35ca0826', N'Chouhans', N'chouhanrohan@gmail.com', N'78787', N'India', N'Skype', CAST(N'2023-04-05T11:36:07.7210000+00:00' AS DateTimeOffset), CAST(N'2023-04-05T17:06:43.983' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', CAST(N'2023-04-13T14:38:24.043' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', 1, NULL, NULL)
+INSERT [dbo].[Clients] ([ClientId], [ClientName], [ClientEmail], [ContactNo], [Country], [Communication], [TimeZone], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive], [DepartmentId], [MarketPlaceAccountsId]) VALUES (N'8caaaca5-9158-478f-ef58-08db3cc791d1', N'MMMMMMMMMMMM', N'', N'', N'Armenia', N'Live', NULL, CAST(N'2023-04-14T14:36:44.600' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', CAST(N'2023-04-14T17:51:55.117' AS DateTime), NULL, 0, NULL, NULL)
+INSERT [dbo].[Clients] ([ClientId], [ClientName], [ClientEmail], [ContactNo], [Country], [Communication], [TimeZone], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive], [DepartmentId], [MarketPlaceAccountsId]) VALUES (N'7ae125c0-d504-4085-3bef-08db3ff9a8ff', N'jjjjjjjj', N'', N'', N'Antarctica', N'jjjjjjjjjjjjj', NULL, CAST(N'2023-04-18T16:12:52.873' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', NULL, NULL, 1, NULL, NULL)
+INSERT [dbo].[Clients] ([ClientId], [ClientName], [ClientEmail], [ContactNo], [Country], [Communication], [TimeZone], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive], [DepartmentId], [MarketPlaceAccountsId]) VALUES (N'd099eb86-6d5a-4153-ef09-08db40d364ad', N'oldeverclient', N'newever@gmail.com', N'77777888888', N'India', N'Skype', CAST(N'2023-04-19T12:40:26.8120000+00:00' AS DateTimeOffset), CAST(N'2023-04-19T18:11:27.627' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', CAST(N'2023-04-19T18:25:13.073' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', 0, N'086c107d-e7a0-4a59-66e3-08dafa2c922c', NULL)
+INSERT [dbo].[Clients] ([ClientId], [ClientName], [ClientEmail], [ContactNo], [Country], [Communication], [TimeZone], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive], [DepartmentId], [MarketPlaceAccountsId]) VALUES (N'a420c187-e63e-4735-8e10-08db40e0a020', N'Nesest', N'', N'87878788778', N'Anguilla', N'Slack', NULL, CAST(N'2023-04-19T19:46:10.677' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', NULL, NULL, 1, N'00000000-0000-0000-0000-000000000000', NULL)
+INSERT [dbo].[Clients] ([ClientId], [ClientName], [ClientEmail], [ContactNo], [Country], [Communication], [TimeZone], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive], [DepartmentId], [MarketPlaceAccountsId]) VALUES (N'e521dc59-5f16-4ec1-b8eb-08db40f9ffd2', N'ststststtststtst', N'a@a.com', N'8787878887', N'India', N'Skype', CAST(N'2023-04-19T17:16:19.4470000+00:00' AS DateTimeOffset), CAST(N'2023-04-19T22:47:49.390' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', NULL, NULL, 1, N'086c107d-e7a0-4a59-66e3-08dafa2c922c', N'f246b686-aa18-4013-9c79-08db35cfcb4a')
+INSERT [dbo].[Clients] ([ClientId], [ClientName], [ClientEmail], [ContactNo], [Country], [Communication], [TimeZone], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive], [DepartmentId], [MarketPlaceAccountsId]) VALUES (N'b4b84c23-9a66-485b-2e49-08db40fa4fa3', N'hghhghhghghhghghhgh', N'aa@aa.com', N'000000000000000000', N'Canada', N'Google', CAST(N'2023-04-19T17:16:19.4470000+00:00' AS DateTimeOffset), CAST(N'2023-04-19T22:50:02.610' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', CAST(N'2023-04-19T23:07:25.917' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', 1, N'f58663e0-0c63-443b-66e4-08dafa2c922c', N'fd52db97-dfb0-47c2-8eac-08db35d030ce')
+GO
+INSERT [dbo].[Connects] ([ConnectId], [EmployeeId], [DepartmentId], [MarketPlaceAccountsId], [Connect_Date], [ConnectUsed], [Week], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy]) VALUES (N'd1d23460-3629-4de1-0b41-08dafd26d367', N'0a1e995a-2ae6-4893-0dd1-08dafa2ce073', N'086c107d-e7a0-4a59-66e3-08dafa2c922c', N'bbba7eee-d053-4b48-2b69-08db05cca759', CAST(N'2023-01-23' AS Date), 5000, 2, CAST(N'2023-01-23T15:17:22.443' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', NULL, NULL)
+INSERT [dbo].[Connects] ([ConnectId], [EmployeeId], [DepartmentId], [MarketPlaceAccountsId], [Connect_Date], [ConnectUsed], [Week], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy]) VALUES (N'3ae0a212-eeb3-44af-40ac-08dafd303779', N'29f6f894-0420-42c7-0bcc-08dafa37c77b', N'e8c53dae-d906-4375-66e7-08dafa2c922c', N'bbba7eee-d053-4b48-2b69-08db05cca759', CAST(N'2023-01-24' AS Date), 500, 1, CAST(N'2023-01-23T16:24:36.203' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', NULL, NULL)
+INSERT [dbo].[Connects] ([ConnectId], [EmployeeId], [DepartmentId], [MarketPlaceAccountsId], [Connect_Date], [ConnectUsed], [Week], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy]) VALUES (N'c0fcae09-1da5-43e8-58eb-08dafd33e696', N'2ae3acc5-eafb-43f6-0bca-08dafa37c77b', N'f58663e0-0c63-443b-66e4-08dafa2c922c', N'3fa85f64-5717-4562-b3fc-2c963f66afa6', CAST(N'2022-12-30' AS Date), 500, 2, CAST(N'2023-01-23T18:33:41.470' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', CAST(N'2023-04-11T15:58:14.257' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073')
+INSERT [dbo].[Connects] ([ConnectId], [EmployeeId], [DepartmentId], [MarketPlaceAccountsId], [Connect_Date], [ConnectUsed], [Week], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy]) VALUES (N'53671e7c-b7ba-4bcd-58ec-08dafd33e696', N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', N'086c107d-e7a0-4a59-66e3-08dafa2c922c', N'bbba7eee-d053-4b48-2b69-08db05cca759', CAST(N'2023-01-22' AS Date), 10000, 4, CAST(N'2023-02-08T16:04:02.900' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', CAST(N'2023-01-23T19:45:22.667' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073')
+INSERT [dbo].[Connects] ([ConnectId], [EmployeeId], [DepartmentId], [MarketPlaceAccountsId], [Connect_Date], [ConnectUsed], [Week], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy]) VALUES (N'5fcb8d54-5bf9-44ed-7de9-08db09bffedc', N'0a2fed09-7781-41cf-0bc9-08dafa37c77b', N'365c2eb7-b948-433e-66e5-08dafa2c922c', N'bbba7eee-d053-4b48-2b69-08db05cca759', CAST(N'2023-02-08' AS Date), 300, 2, CAST(N'2023-02-08T16:04:02.900' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', NULL, NULL)
+INSERT [dbo].[Connects] ([ConnectId], [EmployeeId], [DepartmentId], [MarketPlaceAccountsId], [Connect_Date], [ConnectUsed], [Week], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy]) VALUES (N'cb2c3dec-4324-49e0-670e-08db39aac1c8', N'04fd8191-d6f1-40ba-0dd3-08dafa2ce073', N'086c107d-e7a0-4a59-66e3-08dafa2c922c', N'8cf19b1d-d4c0-4cba-53af-08db35e5bb63', CAST(N'2023-04-04' AS Date), 10, 3, CAST(N'2023-04-10T15:32:56.170' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', CAST(N'2023-04-10T20:59:39.433' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073')
+INSERT [dbo].[Connects] ([ConnectId], [EmployeeId], [DepartmentId], [MarketPlaceAccountsId], [Connect_Date], [ConnectUsed], [Week], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy]) VALUES (N'50092ddb-9648-440a-2003-08db3c39c60c', N'239197da-6cbf-40d7-0dd0-08dafa2ce073', N'086c107d-e7a0-4a59-66e3-08dafa2c922c', N'0b0584a3-a5f5-4608-dad6-08db34428543', CAST(N'2023-04-04' AS Date), 1, 1, CAST(N'2023-04-13T21:41:43.690' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', CAST(N'2023-04-13T21:42:01.593' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073')
+GO
+INSERT [dbo].[Departments] ([DepartmentId], [DepartmentName], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'086c107d-e7a0-4a59-66e3-08dafa2c922c', N'Dot NET', CAST(N'2023-01-19T20:20:56.580' AS DateTime), NULL, CAST(N'2023-01-24T21:36:30.730' AS DateTime), NULL, 1)
+INSERT [dbo].[Departments] ([DepartmentId], [DepartmentName], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'f58663e0-0c63-443b-66e4-08dafa2c922c', N'Designing', CAST(N'2023-01-19T20:21:04.257' AS DateTime), NULL, CAST(N'2023-04-18T16:16:42.913' AS DateTime), NULL, 0)
+INSERT [dbo].[Departments] ([DepartmentId], [DepartmentName], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'365c2eb7-b948-433e-66e5-08dafa2c922c', N'Reacts', CAST(N'2023-01-19T20:21:27.860' AS DateTime), NULL, CAST(N'2023-04-05T16:49:10.110' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', 1)
+INSERT [dbo].[Departments] ([DepartmentId], [DepartmentName], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'688f21dd-9fe9-4bea-66e6-08dafa2c922c', N'Sales', CAST(N'2023-01-19T20:21:32.477' AS DateTime), NULL, NULL, NULL, 1)
+INSERT [dbo].[Departments] ([DepartmentId], [DepartmentName], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'e8c53dae-d906-4375-66e7-08dafa2c922c', N'Digital Marketing', CAST(N'2023-01-19T20:21:43.357' AS DateTime), NULL, CAST(N'2023-04-18T16:16:52.673' AS DateTime), NULL, 1)
+INSERT [dbo].[Departments] ([DepartmentId], [DepartmentName], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'426a4782-1fbb-4810-66e8-08dafa2c922c', N'Quality Analyst', CAST(N'2023-01-19T20:21:56.130' AS DateTime), NULL, NULL, NULL, 1)
+INSERT [dbo].[Departments] ([DepartmentId], [DepartmentName], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'8dbefd3c-a973-4bf6-66e9-08dafa2c922c', N'Php', CAST(N'2023-01-19T20:22:04.807' AS DateTime), NULL, NULL, NULL, 1)
+INSERT [dbo].[Departments] ([DepartmentId], [DepartmentName], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'3ca7f858-87bd-4683-66ea-08dafa2c922c', N'HR and Management', CAST(N'2023-01-19T20:24:47.207' AS DateTime), NULL, NULL, NULL, 1)
+INSERT [dbo].[Departments] ([DepartmentId], [DepartmentName], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'5c86c545-b582-4f0f-2e4b-08dafd1ac8b4', N'CEO', CAST(N'2023-01-23T13:51:10.457' AS DateTime), NULL, CAST(N'2023-04-18T16:16:39.933' AS DateTime), NULL, 0)
+INSERT [dbo].[Departments] ([DepartmentId], [DepartmentName], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'071d0660-7997-47f8-ff34-08db2f7fc64a', N'Party', CAST(N'2023-03-28T17:00:03.743' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', CAST(N'2023-04-10T11:43:29.673' AS DateTime), NULL, 1)
+INSERT [dbo].[Departments] ([DepartmentId], [DepartmentName], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'02ceffe8-74af-4445-6dfa-08db35c7a156', N'Javas', CAST(N'2023-04-05T16:49:32.467' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', CAST(N'2023-04-05T23:12:49.990' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', 1)
+GO
+INSERT [dbo].[EmployeeProjects] ([EmpProjectId], [EmployeeId], [ProjectId], [BillingHour], [UnBillingHour], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'de60412d-a760-47df-2db3-08db2151ab12', N'bb1029e6-9379-42ef-f89e-08db1006600e', N'a13d71d5-5f7e-43d0-ed50-08dafed51861', CAST(40 AS Decimal(18, 0)), CAST(25 AS Decimal(18, 0)), CAST(N'2023-03-10T15:54:44.973' AS DateTime), NULL, NULL, NULL, 0)
+GO
+INSERT [dbo].[Employees] ([EmployeeId], [Password], [FirstName], [LastName], [Address], [Email], [DepartmentId], [MobileNo], [Gender], [Role], [ShiftType], [EmergencyNumber], [DOB], [ProfilePicture], [EmployeeNumber], [JoiningDate], [ResignationDate], [SickLeaves], [CasualLeaves], [AssignedTo], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'239197da-6cbf-40d7-0dd0-08dafa2ce073', N'$2a$11$VCMajI2U1IdInOt2w0.OS.yWFixQzuf3bdx2zLW2.C7BQ8p476hYq', N'Amit ', N'Rana', N'Mohali, Punjab', N'amit.rana@supremetechnologiesindia.com', N'086c107d-e7a0-4a59-66e3-08dafa2c922c', N'9878958475', N'Male', N'TeamLead', NULL, NULL, NULL, NULL, N'ST01', CAST(N'2023-01-05T00:00:00.000' AS DateTime), CAST(N'2023-01-06T00:00:00.000' AS DateTime), NULL, NULL, NULL, NULL, NULL, CAST(N'2023-04-17T22:31:45.567' AS DateTime), NULL, 1)
+INSERT [dbo].[Employees] ([EmployeeId], [Password], [FirstName], [LastName], [Address], [Email], [DepartmentId], [MobileNo], [Gender], [Role], [ShiftType], [EmergencyNumber], [DOB], [ProfilePicture], [EmployeeNumber], [JoiningDate], [ResignationDate], [SickLeaves], [CasualLeaves], [AssignedTo], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'0a1e995a-2ae6-4893-0dd1-08dafa2ce073', N'$2a$11$Nn6J4RrYvcj.KFqqzQQ3ze0/dvDNMziTdaLnLcuCmKDsDmNkCWWwy', N'Sonia', N'Sidhu', N'Mohali, Punjab', N'sonia.sidhu@supremetechnologiesindia.com', N'3ca7f858-87bd-4683-66ea-08dafa2c922c', N'8754845157', N'Female', N'HR', NULL, NULL, NULL, NULL, N'ST02', CAST(N'2023-01-19T00:00:00.000' AS DateTime), CAST(N'2023-01-24T00:00:00.000' AS DateTime), NULL, NULL, NULL, NULL, NULL, CAST(N'2023-01-24T21:17:58.747' AS DateTime), NULL, 1)
+INSERT [dbo].[Employees] ([EmployeeId], [Password], [FirstName], [LastName], [Address], [Email], [DepartmentId], [MobileNo], [Gender], [Role], [ShiftType], [EmergencyNumber], [DOB], [ProfilePicture], [EmployeeNumber], [JoiningDate], [ResignationDate], [SickLeaves], [CasualLeaves], [AssignedTo], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', N'$2a$11$dZem8AdPqXXqsfuV7gt4nOa4wrArxh.9.faVctRA.tIZ4BtuGhkjm', N'Vinayak', N'Thakur', N'Mohali, Punjab', N'vinayak@supremetechnologiesindia.com', N'3ca7f858-87bd-4683-66ea-08dafa2c922c', N'8954875125', N'Male', N'Admin', NULL, NULL, NULL, NULL, N'ST03', NULL, NULL, NULL, NULL, NULL, CAST(N'2023-01-19T20:27:02.603' AS DateTime), NULL, CAST(N'2023-04-10T19:36:38.950' AS DateTime), NULL, 1)
+INSERT [dbo].[Employees] ([EmployeeId], [Password], [FirstName], [LastName], [Address], [Email], [DepartmentId], [MobileNo], [Gender], [Role], [ShiftType], [EmergencyNumber], [DOB], [ProfilePicture], [EmployeeNumber], [JoiningDate], [ResignationDate], [SickLeaves], [CasualLeaves], [AssignedTo], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'04fd8191-d6f1-40ba-0dd3-08dafa2ce073', N'$2a$11$j90oTUXfxTY4mhDc37lkoeOoSyriY1ZMqyiFVS8o93maZ5OuhpK3S', N'Atul', N'Katoch', N'Mohali, Punjab', N'atul.katoch@supremetechnologiesindia.com', N'688f21dd-9fe9-4bea-66e6-08dafa2c922c', N'5698745895', N'Male', N'TeamLead', NULL, NULL, NULL, NULL, N'ST04', NULL, NULL, NULL, NULL, NULL, CAST(N'2023-01-19T20:31:36.657' AS DateTime), NULL, NULL, NULL, 1)
+INSERT [dbo].[Employees] ([EmployeeId], [Password], [FirstName], [LastName], [Address], [Email], [DepartmentId], [MobileNo], [Gender], [Role], [ShiftType], [EmergencyNumber], [DOB], [ProfilePicture], [EmployeeNumber], [JoiningDate], [ResignationDate], [SickLeaves], [CasualLeaves], [AssignedTo], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'0a2fed09-7781-41cf-0bc9-08dafa37c77b', N'$2a$11$FHybhvV7QQudOzZXYuzJ9.wzKUd2tP9tKzVSdjKUMnSWdvB9ZEEYC', N'Rajat', N'Dhiman', N'Mohali, punjab', N'rajat@supremetechnologiesindia.com', N'f58663e0-0c63-443b-66e4-08dafa2c922c', N'87547875487', N'Male', N'Employee', NULL, NULL, NULL, NULL, N'ST40', CAST(N'2022-12-29T00:00:00.000' AS DateTime), CAST(N'2023-01-21T00:00:00.000' AS DateTime), NULL, NULL, NULL, NULL, NULL, CAST(N'2023-04-17T20:58:55.647' AS DateTime), NULL, 1)
+INSERT [dbo].[Employees] ([EmployeeId], [Password], [FirstName], [LastName], [Address], [Email], [DepartmentId], [MobileNo], [Gender], [Role], [ShiftType], [EmergencyNumber], [DOB], [ProfilePicture], [EmployeeNumber], [JoiningDate], [ResignationDate], [SickLeaves], [CasualLeaves], [AssignedTo], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'2ae3acc5-eafb-43f6-0bca-08dafa37c77b', N'$2a$11$g2xEKFpOU7zPjZbEGTq0F.AxIgorYVv6tLIOIbQ2y6i4T9X0ST5Pa', N'Amit', N'Kumar', N'Mohali, Punjab', N'amit.kumar@supremetechnologiesindia.com', N'f58663e0-0c63-443b-66e4-08dafa2c922c', N'8754878754', N'Male', N'Employee', NULL, NULL, NULL, NULL, N'ST05', NULL, NULL, NULL, NULL, NULL, CAST(N'2023-01-20T14:30:42.357' AS DateTime), NULL, CAST(N'2023-04-18T18:26:42.043' AS DateTime), NULL, 1)
+INSERT [dbo].[Employees] ([EmployeeId], [Password], [FirstName], [LastName], [Address], [Email], [DepartmentId], [MobileNo], [Gender], [Role], [ShiftType], [EmergencyNumber], [DOB], [ProfilePicture], [EmployeeNumber], [JoiningDate], [ResignationDate], [SickLeaves], [CasualLeaves], [AssignedTo], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'2b1dffa9-c367-4845-0bcb-08dafa37c77b', N'$2a$11$PcUqSnOImJRvUTvBPBPru.G073wSYqxMxh.L7hVQA2pi/HQ0MzELi', N'Anshul', N'Kumar', N'Mohali, India', N'anshul@supremetechnologiesindia.com', N'8dbefd3c-a973-4bf6-66e9-08dafa2c922c', N'8754878548', N'Male', N'Employee', NULL, NULL, NULL, NULL, N'ST06', NULL, NULL, NULL, NULL, NULL, CAST(N'2023-01-20T14:40:45.880' AS DateTime), NULL, NULL, NULL, 1)
+INSERT [dbo].[Employees] ([EmployeeId], [Password], [FirstName], [LastName], [Address], [Email], [DepartmentId], [MobileNo], [Gender], [Role], [ShiftType], [EmergencyNumber], [DOB], [ProfilePicture], [EmployeeNumber], [JoiningDate], [ResignationDate], [SickLeaves], [CasualLeaves], [AssignedTo], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'29f6f894-0420-42c7-0bcc-08dafa37c77b', N'$2a$11$iqx6k.HOzKr2A3F65tUkgOwCtrwESBiCHAAdaQCkesGQzfnTqfye6', N'dhg', N'ghgfh', N'', N'etetygrtg@supremetechnologiesindia.com', N'365c2eb7-b948-433e-66e5-08dafa2c922c', N'878548745', N'Male', N'Employee', NULL, NULL, NULL, NULL, N'rgtdtd', NULL, NULL, NULL, NULL, NULL, CAST(N'2023-01-20T15:19:36.977' AS DateTime), NULL, NULL, NULL, 1)
+INSERT [dbo].[Employees] ([EmployeeId], [Password], [FirstName], [LastName], [Address], [Email], [DepartmentId], [MobileNo], [Gender], [Role], [ShiftType], [EmergencyNumber], [DOB], [ProfilePicture], [EmployeeNumber], [JoiningDate], [ResignationDate], [SickLeaves], [CasualLeaves], [AssignedTo], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'14a52f7e-37d3-4261-0bcd-08dafa37c77b', N'$2a$11$ZGPYiob0.h9crRUndsni0eExpq/W2uiwIGpsCSLphCVDetESfFtUu', N'Suryanshu', N'Kumar', N'', N'suryanshu@supremetechnologiesindia.com', N'086c107d-e7a0-4a59-66e3-08dafa2c922c', N'8795875421', N'Male', N'Employee', NULL, NULL, NULL, NULL, N'ST55', CAST(N'2023-01-21T00:00:00.000' AS DateTime), NULL, NULL, NULL, NULL, CAST(N'2023-01-20T15:27:15.077' AS DateTime), NULL, NULL, NULL, 1)
+INSERT [dbo].[Employees] ([EmployeeId], [Password], [FirstName], [LastName], [Address], [Email], [DepartmentId], [MobileNo], [Gender], [Role], [ShiftType], [EmergencyNumber], [DOB], [ProfilePicture], [EmployeeNumber], [JoiningDate], [ResignationDate], [SickLeaves], [CasualLeaves], [AssignedTo], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'51d57d8f-1848-441b-0bce-08dafa37c77b', N'$2a$11$X1iAJ8nmRHjN8HC1Zuj4KeQWPLC0PDy/xfZVp1t1giip7BPCH.aCK', N'vikas', N'Singh', N'#Mohali', N'vikas@supremetechnologiesindia.com', N'086c107d-e7a0-4a59-66e3-08dafa2c922c', N'789548754', N'Male', N'Employee', NULL, NULL, NULL, NULL, N'ST89', CAST(N'2023-01-21T00:00:00.000' AS DateTime), NULL, NULL, NULL, NULL, CAST(N'2023-01-20T15:28:09.690' AS DateTime), NULL, CAST(N'2023-04-06T22:59:31.240' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', 1)
+INSERT [dbo].[Employees] ([EmployeeId], [Password], [FirstName], [LastName], [Address], [Email], [DepartmentId], [MobileNo], [Gender], [Role], [ShiftType], [EmergencyNumber], [DOB], [ProfilePicture], [EmployeeNumber], [JoiningDate], [ResignationDate], [SickLeaves], [CasualLeaves], [AssignedTo], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'ae62843d-163f-463f-0bcf-08dafa37c77b', N'$2a$11$M70KtxrATj49PMr328c9y.tMMH8GDNveRB8MzInfFZnmXudwQZug.', N'Inderjeet', N'Singh', N'', N'inderjeet@supremetechnologiesindia.com', N'f58663e0-0c63-443b-66e4-08dafa2c922c', N'879875487', N'Male', N'Employee', NULL, NULL, NULL, NULL, N'ST90', CAST(N'2023-01-19T00:00:00.000' AS DateTime), NULL, NULL, NULL, NULL, CAST(N'2023-01-20T15:30:04.030' AS DateTime), NULL, CAST(N'2023-04-11T15:56:55.003' AS DateTime), NULL, 1)
+INSERT [dbo].[Employees] ([EmployeeId], [Password], [FirstName], [LastName], [Address], [Email], [DepartmentId], [MobileNo], [Gender], [Role], [ShiftType], [EmergencyNumber], [DOB], [ProfilePicture], [EmployeeNumber], [JoiningDate], [ResignationDate], [SickLeaves], [CasualLeaves], [AssignedTo], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'e8fd1720-ac87-4c90-d298-08dafec60fc8', N'$2a$11$L5f5TWf6aCaXlgNAfoQBJeksSff65cJDpaMU3CWpPD1j..kENkzKu', N'Jasmeet', N'Sin', N'Australia', N'mohit.saini174@supremetechnologiesindia.com', N'e8c53dae-d906-4375-66e7-08dafa2c922c', N'8954875125', N'Male', N'Employee', NULL, NULL, NULL, NULL, N'ST6078', CAST(N'2023-01-27T00:00:00.000' AS DateTime), NULL, NULL, NULL, NULL, NULL, NULL, CAST(N'2023-04-10T16:38:02.243' AS DateTime), NULL, 1)
+INSERT [dbo].[Employees] ([EmployeeId], [Password], [FirstName], [LastName], [Address], [Email], [DepartmentId], [MobileNo], [Gender], [Role], [ShiftType], [EmergencyNumber], [DOB], [ProfilePicture], [EmployeeNumber], [JoiningDate], [ResignationDate], [SickLeaves], [CasualLeaves], [AssignedTo], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'809fb396-8ce2-4892-d370-08db039b3d2e', N'$2a$11$QP5MxFJsJHFbxbLG.TrGO.1lLrgqbcw9KVvf79VN9oLYeaEPuI6rW', N'amarpal', N'kaur', N'string', N'amarpal@supremetechnologiesindia.com', N'086c107d-e7a0-4a59-66e3-08dafa2c922c', N'123456789', N'Female', N'Employee', NULL, NULL, NULL, NULL, N'ST0097', CAST(N'2023-01-31T14:51:17.023' AS DateTime), CAST(N'2023-01-31T14:51:17.023' AS DateTime), 0, 0, NULL, CAST(N'2023-01-31T20:25:48.667' AS DateTime), N'3fa85f64-5717-4562-b3fc-2c963f66afa6', NULL, N'3fa85f64-5717-4562-b3fc-2c963f66afa6', 1)
+INSERT [dbo].[Employees] ([EmployeeId], [Password], [FirstName], [LastName], [Address], [Email], [DepartmentId], [MobileNo], [Gender], [Role], [ShiftType], [EmergencyNumber], [DOB], [ProfilePicture], [EmployeeNumber], [JoiningDate], [ResignationDate], [SickLeaves], [CasualLeaves], [AssignedTo], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'8bbd5f4a-f9c9-4d17-ca44-08db0f79a8c7', N'$2a$11$3RXGvixVF0ZrWodYVeWWO.iAxD6haHeoEnFPW1GcnKRgthzWKpnMW', N'Rahul', N'Katoch', N'Palampur,HimachalPardesh', N'rahul.katoch@supremetechnologiesindia.com', N'086c107d-e7a0-4a59-66e3-08dafa2c922c', N'+917807394297', N'Male', N'Employee', 2, N'+919816221165', CAST(N'2000-08-04T09:51:32.887' AS DateTime), N'https://picsum.photos/200', N'ST99', CAST(N'2021-11-16T09:51:32.887' AS DateTime), CAST(N'2035-08-04T09:51:32.887' AS DateTime), 9, 12, N'ce34080d-168a-4c7c-d37a-08db2081e213', NULL, NULL, CAST(N'2023-02-16T15:28:49.413' AS DateTime), NULL, 1)
+INSERT [dbo].[Employees] ([EmployeeId], [Password], [FirstName], [LastName], [Address], [Email], [DepartmentId], [MobileNo], [Gender], [Role], [ShiftType], [EmergencyNumber], [DOB], [ProfilePicture], [EmployeeNumber], [JoiningDate], [ResignationDate], [SickLeaves], [CasualLeaves], [AssignedTo], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'bb1029e6-9379-42ef-f89e-08db1006600e', N'$2a$11$PoDwIzb.W4PzhJoleG8sK.nPQmw6CoUBU6sJaVuXga/nsq7BZMpFa', N'Ankit', N'Narula', N'Landra,Mohali', N'ankit.narula@supremetechnologiesindia.com', N'086c107d-e7a0-4a59-66e3-08dafa2c922c', N'+917696152289', N'Male', N'Employee', 2, N'+918894339436', CAST(N'2002-02-04T08:57:53.807' AS DateTime), N'https://picsum.photos/200/300', N'ST100', CAST(N'2022-08-16T08:57:53.807' AS DateTime), CAST(N'2035-02-16T08:57:53.807' AS DateTime), 9, 12, N'8bbd5f4a-f9c9-4d17-ca44-08db0f79a8c7', CAST(N'2023-02-16T15:42:57.780' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', NULL, NULL, 1)
+INSERT [dbo].[Employees] ([EmployeeId], [Password], [FirstName], [LastName], [Address], [Email], [DepartmentId], [MobileNo], [Gender], [Role], [ShiftType], [EmergencyNumber], [DOB], [ProfilePicture], [EmployeeNumber], [JoiningDate], [ResignationDate], [SickLeaves], [CasualLeaves], [AssignedTo], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'ce34080d-168a-4c7c-d37a-08db2081e213', N'$2a$11$odQWS7QJDOhmK097oHyqUezjgBdPU7JMGOjfuS6FlelEpAhDU9IPO', N'Rahulsss', N'Chouhansss', N'#Mohalissss', N'rahul.chouhan@supremetechnologiesindia.com', N'086c107d-e7a0-4a59-66e3-08dafa2c922c', N'8054886162', N'Male', N'TeamLead', NULL, NULL, NULL, NULL, N'ST--10000000011111111', CAST(N'2023-03-07T00:00:00.000' AS DateTime), NULL, NULL, NULL, NULL, CAST(N'2023-03-09T15:07:22.020' AS DateTime), NULL, CAST(N'2023-04-06T19:09:09.677' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', 1)
+INSERT [dbo].[Employees] ([EmployeeId], [Password], [FirstName], [LastName], [Address], [Email], [DepartmentId], [MobileNo], [Gender], [Role], [ShiftType], [EmergencyNumber], [DOB], [ProfilePicture], [EmployeeNumber], [JoiningDate], [ResignationDate], [SickLeaves], [CasualLeaves], [AssignedTo], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'4b8a85f5-966c-4e1e-52af-08db35be101f', N'$2a$11$0clgzOjsMJ3m58Alv0dtyOuJg7tO1ZENTUrQCl4fZCCLkx2y3y9Ze', N'Nikhil', N'Prashar', N'#Nadaun', N'nikhil.prashar@supremetechnologiesindia.com', N'365c2eb7-b948-433e-66e5-08dafa2c922c', N'787878', N'Male', N'Admin', 1, N'787878', CAST(N'2023-04-05T10:15:54.383' AS DateTime), N'string', N'ST-0000', CAST(N'2023-04-05T10:15:54.383' AS DateTime), CAST(N'2023-04-05T10:15:54.383' AS DateTime), 0, -1, N'4b8a85f5-966c-4e1e-52af-08db35be101f', CAST(N'2023-04-05T15:41:03.363' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', CAST(N'2023-04-10T18:44:52.530' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', 1)
+GO
+INSERT [dbo].[EmployeeSalaries] ([SalaryId], [EmployeeId], [BasicSalary], [Bonus], [DA], [HRA], [LearningAllowance], [UniformAllowance], [ConveyanceAllowance], [ProjectLevelBonus], [GrossSalary], [AccountNumber], [IfscCode], [BankName], [EPFApplicable], [ESIApplicable], [UANNo], [ESINo], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'1c0601a2-51f8-4f3c-b730-08db051f5b83', N'0a1e995a-2ae6-4893-0dd1-08dafa2ce073', CAST(20000 AS Decimal(18, 0)), CAST(542 AS Decimal(18, 0)), CAST(659 AS Decimal(18, 0)), CAST(478 AS Decimal(18, 0)), CAST(987 AS Decimal(18, 0)), CAST(698 AS Decimal(18, 0)), CAST(120 AS Decimal(18, 0)), CAST(6000 AS Decimal(18, 0)), N'400', NULL, NULL, NULL, N'No', N'Yes', N'dgbd45gbdf4gh5fg', N'dfg4df54g55', CAST(N'2023-02-02T18:44:04.067' AS DateTime), NULL, NULL, NULL, NULL)
+INSERT [dbo].[EmployeeSalaries] ([SalaryId], [EmployeeId], [BasicSalary], [Bonus], [DA], [HRA], [LearningAllowance], [UniformAllowance], [ConveyanceAllowance], [ProjectLevelBonus], [GrossSalary], [AccountNumber], [IfscCode], [BankName], [EPFApplicable], [ESIApplicable], [UANNo], [ESINo], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'44972e24-80ea-4a46-b731-08db051f5b83', N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', CAST(30000 AS Decimal(18, 0)), CAST(874 AS Decimal(18, 0)), CAST(698 AS Decimal(18, 0)), CAST(418 AS Decimal(18, 0)), CAST(957 AS Decimal(18, 0)), CAST(301 AS Decimal(18, 0)), CAST(365 AS Decimal(18, 0)), CAST(9000 AS Decimal(18, 0)), N'500', NULL, NULL, NULL, N'Yes', N'No', N'dfgdg54454dfgdfg', N'sdg458d7g45dfgdf', CAST(N'2023-02-02T18:45:16.577' AS DateTime), NULL, NULL, NULL, NULL)
+INSERT [dbo].[EmployeeSalaries] ([SalaryId], [EmployeeId], [BasicSalary], [Bonus], [DA], [HRA], [LearningAllowance], [UniformAllowance], [ConveyanceAllowance], [ProjectLevelBonus], [GrossSalary], [AccountNumber], [IfscCode], [BankName], [EPFApplicable], [ESIApplicable], [UANNo], [ESINo], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'a8aef3ba-699a-4535-b732-08db051f5b83', N'04fd8191-d6f1-40ba-0dd3-08dafa2ce073', CAST(40000 AS Decimal(18, 0)), CAST(547 AS Decimal(18, 0)), CAST(962 AS Decimal(18, 0)), CAST(320 AS Decimal(18, 0)), CAST(214 AS Decimal(18, 0)), CAST(301 AS Decimal(18, 0)), CAST(9874 AS Decimal(18, 0)), CAST(8000 AS Decimal(18, 0)), N'800', NULL, NULL, NULL, N'No', N'Yes', N'dbh54df5g4b5gfbfg', N'54g65dfgdfgdgdg41', CAST(N'2023-02-02T18:46:51.913' AS DateTime), NULL, NULL, NULL, NULL)
+INSERT [dbo].[EmployeeSalaries] ([SalaryId], [EmployeeId], [BasicSalary], [Bonus], [DA], [HRA], [LearningAllowance], [UniformAllowance], [ConveyanceAllowance], [ProjectLevelBonus], [GrossSalary], [AccountNumber], [IfscCode], [BankName], [EPFApplicable], [ESIApplicable], [UANNo], [ESINo], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'cc9318b0-faf6-49a0-b733-08db051f5b83', N'0a2fed09-7781-41cf-0bc9-08dafa37c77b', CAST(35000 AS Decimal(18, 0)), CAST(8745 AS Decimal(18, 0)), CAST(652 AS Decimal(18, 0)), CAST(145 AS Decimal(18, 0)), CAST(987 AS Decimal(18, 0)), CAST(875 AS Decimal(18, 0)), CAST(210 AS Decimal(18, 0)), CAST(4000 AS Decimal(18, 0)), N'4102', NULL, NULL, NULL, N'Yes', N'No', N'degdg54dgb56df4gdgb', N'23d14gb5df4g5ddgdfg', CAST(N'2023-02-02T18:47:50.063' AS DateTime), NULL, NULL, NULL, NULL)
+INSERT [dbo].[EmployeeSalaries] ([SalaryId], [EmployeeId], [BasicSalary], [Bonus], [DA], [HRA], [LearningAllowance], [UniformAllowance], [ConveyanceAllowance], [ProjectLevelBonus], [GrossSalary], [AccountNumber], [IfscCode], [BankName], [EPFApplicable], [ESIApplicable], [UANNo], [ESINo], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'c2510985-071a-464b-be3d-08db0523583d', N'2ae3acc5-eafb-43f6-0bca-08dafa37c77b', CAST(35000 AS Decimal(18, 0)), CAST(2500 AS Decimal(18, 0)), CAST(145 AS Decimal(18, 0)), CAST(2015 AS Decimal(18, 0)), CAST(54120 AS Decimal(18, 0)), CAST(2104 AS Decimal(18, 0)), CAST(1203 AS Decimal(18, 0)), CAST(5000 AS Decimal(18, 0)), N'5000', N'jdhgokjedtyhr5h4yh45ty6h464ty65hj54ty6hj4', N'534gbd453', N'Axis bank', N'Yes', N'No', N'21054', N'sdfsdfds4gvd54v5fd4', CAST(N'2023-02-02T19:12:36.800' AS DateTime), NULL, NULL, NULL, NULL)
+INSERT [dbo].[EmployeeSalaries] ([SalaryId], [EmployeeId], [BasicSalary], [Bonus], [DA], [HRA], [LearningAllowance], [UniformAllowance], [ConveyanceAllowance], [ProjectLevelBonus], [GrossSalary], [AccountNumber], [IfscCode], [BankName], [EPFApplicable], [ESIApplicable], [UANNo], [ESINo], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'811557d1-acfe-44d3-0174-08db05267b79', N'2b1dffa9-c367-4845-0bcb-08dafa37c77b', CAST(45000 AS Decimal(18, 0)), CAST(250 AS Decimal(18, 0)), CAST(3500 AS Decimal(18, 0)), CAST(5200 AS Decimal(18, 0)), CAST(250 AS Decimal(18, 0)), CAST(1254 AS Decimal(18, 0)), CAST(2310 AS Decimal(18, 0)), CAST(1205 AS Decimal(18, 0)), N'5000', N'fh54fg5h4fg5h453g', N'd1b456fg4b5fg4b5f4b', N'4gv56g4df4gv5fd', N'Yes', N'No', N'545123', N'255464', CAST(N'2023-02-02T19:35:05.123' AS DateTime), N'2b1dffa9-c367-4845-0bcb-08dafa37c77b', NULL, NULL, NULL)
+INSERT [dbo].[EmployeeSalaries] ([SalaryId], [EmployeeId], [BasicSalary], [Bonus], [DA], [HRA], [LearningAllowance], [UniformAllowance], [ConveyanceAllowance], [ProjectLevelBonus], [GrossSalary], [AccountNumber], [IfscCode], [BankName], [EPFApplicable], [ESIApplicable], [UANNo], [ESINo], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'86186e39-4d25-4c74-12a9-08db39afdd10', N'4b8a85f5-966c-4e1e-52af-08db35be101f', CAST(222 AS Decimal(18, 0)), CAST(222 AS Decimal(18, 0)), CAST(222 AS Decimal(18, 0)), CAST(222 AS Decimal(18, 0)), CAST(222 AS Decimal(18, 0)), CAST(222 AS Decimal(18, 0)), CAST(222 AS Decimal(18, 0)), CAST(222 AS Decimal(18, 0)), N'222', N'111', N'211122', N'11111111', N'Yes', N'Yes', N'222', N'222', CAST(N'2023-04-10T16:09:29.447' AS DateTime), N'e8fd1720-ac87-4c90-d298-08dafec60fc8', CAST(N'2023-04-10T18:32:26.470' AS DateTime), N'4b8a85f5-966c-4e1e-52af-08db35be101f', NULL)
+INSERT [dbo].[EmployeeSalaries] ([SalaryId], [EmployeeId], [BasicSalary], [Bonus], [DA], [HRA], [LearningAllowance], [UniformAllowance], [ConveyanceAllowance], [ProjectLevelBonus], [GrossSalary], [AccountNumber], [IfscCode], [BankName], [EPFApplicable], [ESIApplicable], [UANNo], [ESINo], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'b08bc64d-0bd3-4602-a254-08db39c4c642', N'ce34080d-168a-4c7c-d37a-08db2081e213', CAST(1 AS Decimal(18, 0)), CAST(1 AS Decimal(18, 0)), CAST(11 AS Decimal(18, 0)), CAST(11 AS Decimal(18, 0)), CAST(1 AS Decimal(18, 0)), CAST(11 AS Decimal(18, 0)), CAST(1 AS Decimal(18, 0)), CAST(11 AS Decimal(18, 0)), N'1', N'11', N'11', N'1', N'Yes', N'Yes', N'11', N'1', CAST(N'2023-04-10T18:39:11.103' AS DateTime), N'ce34080d-168a-4c7c-d37a-08db2081e213', CAST(N'2023-04-10T19:11:43.470' AS DateTime), N'ce34080d-168a-4c7c-d37a-08db2081e213', NULL)
+GO
+INSERT [dbo].[Leaves] ([Id], [EmployeeId], [LeaveType], [Date], [Reason], [Status], [CreatedDate], [CreatedBy], [LastModifiedBy], [LastModified], [IsActive], [End_Date]) VALUES (N'fbf728e4-7309-4c0a-dd5f-08db39ccfd13', N'2ae3acc5-eafb-43f6-0bca-08dafa37c77b', 2, CAST(N'2023-04-25T00:00:00.000' AS DateTime), N'Emergency Leave', 1, CAST(N'2023-04-10T20:18:45.397' AS DateTime), N'2ae3acc5-eafb-43f6-0bca-08dafa37c77b', N'2ae3acc5-eafb-43f6-0bca-08dafa37c77b', CAST(N'2023-04-18T18:26:42.227' AS DateTime), 0, NULL)
+INSERT [dbo].[Leaves] ([Id], [EmployeeId], [LeaveType], [Date], [Reason], [Status], [CreatedDate], [CreatedBy], [LastModifiedBy], [LastModified], [IsActive], [End_Date]) VALUES (N'ac2fcca9-b7e4-4fb1-dd60-08db39ccfd13', N'e8fd1720-ac87-4c90-d298-08dafec60fc8', 2, CAST(N'2023-04-25T00:00:00.000' AS DateTime), N'Emergency Leave', 2, CAST(N'2023-04-10T20:38:36.077' AS DateTime), N'e8fd1720-ac87-4c90-d298-08dafec60fc8', N'e8fd1720-ac87-4c90-d298-08dafec60fc8', CAST(N'2023-04-11T15:56:47.340' AS DateTime), 0, NULL)
+INSERT [dbo].[Leaves] ([Id], [EmployeeId], [LeaveType], [Date], [Reason], [Status], [CreatedDate], [CreatedBy], [LastModifiedBy], [LastModified], [IsActive], [End_Date]) VALUES (N'f03a39d0-325a-47e0-dd61-08db39ccfd13', N'ae62843d-163f-463f-0bcf-08dafa37c77b', 2, CAST(N'2023-04-25T00:00:00.000' AS DateTime), N'Emergency Leave', 1, CAST(N'2023-04-10T20:38:51.723' AS DateTime), N'04fd8191-d6f1-40ba-0dd3-08dafa2ce073', N'ae62843d-163f-463f-0bcf-08dafa37c77b', CAST(N'2023-04-13T15:43:15.953' AS DateTime), 1, NULL)
+INSERT [dbo].[Leaves] ([Id], [EmployeeId], [LeaveType], [Date], [Reason], [Status], [CreatedDate], [CreatedBy], [LastModifiedBy], [LastModified], [IsActive], [End_Date]) VALUES (N'4819ba1b-d820-49a0-908e-08db3f586a06', N'0a2fed09-7781-41cf-0bc9-08dafa37c77b', 2, CAST(N'2023-04-21T00:00:00.000' AS DateTime), N'Emergency', 1, CAST(N'2023-04-17T20:58:37.213' AS DateTime), N'0a2fed09-7781-41cf-0bc9-08dafa37c77b', N'0a2fed09-7781-41cf-0bc9-08dafa37c77b', CAST(N'2023-04-17T22:15:03.823' AS DateTime), 0, NULL)
+INSERT [dbo].[Leaves] ([Id], [EmployeeId], [LeaveType], [Date], [Reason], [Status], [CreatedDate], [CreatedBy], [LastModifiedBy], [LastModified], [IsActive], [End_Date]) VALUES (N'78719db6-7a43-4391-908f-08db3f586a06', N'239197da-6cbf-40d7-0dd0-08dafa2ce073', 2, CAST(N'2023-04-20T00:00:00.000' AS DateTime), N'Have some urgent work!', 1, CAST(N'2023-04-17T22:31:40.227' AS DateTime), N'239197da-6cbf-40d7-0dd0-08dafa2ce073', N'239197da-6cbf-40d7-0dd0-08dafa2ce073', CAST(N'2023-04-17T22:31:45.577' AS DateTime), 0, NULL)
+INSERT [dbo].[Leaves] ([Id], [EmployeeId], [LeaveType], [Date], [Reason], [Status], [CreatedDate], [CreatedBy], [LastModifiedBy], [LastModified], [IsActive], [End_Date]) VALUES (N'189295cd-80cd-43b1-4330-08db40cc6a40', N'0a1e995a-2ae6-4893-0dd1-08dafa2ce073', 4, CAST(N'2023-04-21T00:00:00.000' AS DateTime), N'Emergency Leave', 3, CAST(N'2023-04-19T17:21:30.403' AS DateTime), N'0a1e995a-2ae6-4893-0dd1-08dafa2ce073', NULL, NULL, 1, CAST(N'2023-04-28T00:00:00.000' AS DateTime))
+GO
+INSERT [dbo].[MarketPlaceAccounts] ([Id], [Name], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive], [UserName], [Accounts]) VALUES (N'bbba7eee-d053-4b48-2b69-08db05cca759', N'Rahul Chouhan', CAST(N'2023-02-03T15:24:34.647' AS DateTime), NULL, CAST(N'2023-04-13T22:29:01.050' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', 0, NULL, NULL)
+INSERT [dbo].[MarketPlaceAccounts] ([Id], [Name], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive], [UserName], [Accounts]) VALUES (N'0b0584a3-a5f5-4608-dad6-08db34428543', N'testtesttest', CAST(N'2023-04-03T18:24:11.140' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', CAST(N'2023-04-06T00:45:37.133' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', 0, NULL, NULL)
+INSERT [dbo].[MarketPlaceAccounts] ([Id], [Name], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive], [UserName], [Accounts]) VALUES (N'f246b686-aa18-4013-9c79-08db35cfcb4a', N'Mohits', CAST(N'2023-04-05T17:47:58.827' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', CAST(N'2023-04-05T17:48:40.070' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', 0, NULL, NULL)
+INSERT [dbo].[MarketPlaceAccounts] ([Id], [Name], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive], [UserName], [Accounts]) VALUES (N'fd52db97-dfb0-47c2-8eac-08db35d030ce', N'rahul', CAST(N'2023-04-05T17:50:49.140' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', CAST(N'2023-04-05T17:58:44.447' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', 1, NULL, NULL)
+INSERT [dbo].[MarketPlaceAccounts] ([Id], [Name], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive], [UserName], [Accounts]) VALUES (N'c9ccfdeb-e5d2-4b9a-53ad-08db35e5bb63', N'names', CAST(N'2023-04-05T20:25:01.077' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', NULL, NULL, 0, NULL, NULL)
+INSERT [dbo].[MarketPlaceAccounts] ([Id], [Name], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive], [UserName], [Accounts]) VALUES (N'7e522adf-fe0f-4ef2-53ae-08db35e5bb63', N'nnnnnnn', CAST(N'2023-04-05T20:27:02.397' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', NULL, NULL, 0, NULL, NULL)
+INSERT [dbo].[MarketPlaceAccounts] ([Id], [Name], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive], [UserName], [Accounts]) VALUES (N'8cf19b1d-d4c0-4cba-53af-08db35e5bb63', N'RahulChouhan', CAST(N'2023-04-05T20:28:58.200' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', CAST(N'2023-04-06T00:44:25.317' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', 1, NULL, NULL)
+INSERT [dbo].[MarketPlaceAccounts] ([Id], [Name], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive], [UserName], [Accounts]) VALUES (N'87aa3ddc-7637-43d0-75e1-08db40c58a9c', N'xxxxxxxxxxx', CAST(N'2023-04-19T16:32:18.167' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', NULL, NULL, 1, N'xxxxxxxxxxxxx', 1)
+INSERT [dbo].[MarketPlaceAccounts] ([Id], [Name], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive], [UserName], [Accounts]) VALUES (N'3fa85f64-5717-4562-b3fc-2c963f66afa6', N'RahulChouhan', CAST(N'2023-01-27T18:42:51.033' AS DateTime), NULL, CAST(N'2023-04-06T00:44:08.023' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', 1, NULL, NULL)
+GO
+INSERT [dbo].[ProjectBillings] ([BillingId], [MarketPlaceAccountId], [HourBilled], [Week], [BillingDate], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [isActive], [ProjectDepartmentId]) VALUES (N'da82d887-2a9a-421d-68c1-08db0dad3510', N'bbba7eee-d053-4b48-2b69-08db05cca759', CAST(40 AS Decimal(18, 0)), 4, CAST(N'2023-02-13' AS Date), CAST(N'2023-02-13T15:59:38.113' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', CAST(N'2023-04-14T17:52:12.163' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', 0, N'c220b268-1344-4ead-9e08-08db05fed933')
+INSERT [dbo].[ProjectBillings] ([BillingId], [MarketPlaceAccountId], [HourBilled], [Week], [BillingDate], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [isActive], [ProjectDepartmentId]) VALUES (N'6ce6596b-dddf-49a8-68c2-08db0dad3510', N'3fa85f64-5717-4562-b3fc-2c963f66afa6', CAST(10 AS Decimal(18, 0)), 2, CAST(N'2023-02-13' AS Date), CAST(N'2023-02-13T16:03:15.797' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', CAST(N'2023-04-13T16:26:00.563' AS DateTime), NULL, 0, N'031e6b44-e91f-4ad9-04c4-08db05365506')
+INSERT [dbo].[ProjectBillings] ([BillingId], [MarketPlaceAccountId], [HourBilled], [Week], [BillingDate], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [isActive], [ProjectDepartmentId]) VALUES (N'a39bd392-755b-42d3-47bd-08db35ce0b51', N'0b0584a3-a5f5-4608-dad6-08db34428543', CAST(15 AS Decimal(18, 0)), 2, CAST(N'2023-04-10' AS Date), CAST(N'2023-04-05T17:35:27.270' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', CAST(N'2023-04-13T16:26:23.797' AS DateTime), NULL, 0, N'031e6b44-e91f-4ad9-04c4-08db05365506')
+INSERT [dbo].[ProjectBillings] ([BillingId], [MarketPlaceAccountId], [HourBilled], [Week], [BillingDate], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [isActive], [ProjectDepartmentId]) VALUES (N'4ac7418f-86b9-4374-47be-08db35ce0b51', N'0b0584a3-a5f5-4608-dad6-08db34428543', CAST(10 AS Decimal(18, 0)), 3, CAST(N'2023-04-11' AS Date), CAST(N'2023-04-05T17:35:52.063' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', CAST(N'2023-04-13T16:20:13.627' AS DateTime), NULL, 0, N'031e6b44-e91f-4ad9-04c4-08db05365506')
+INSERT [dbo].[ProjectBillings] ([BillingId], [MarketPlaceAccountId], [HourBilled], [Week], [BillingDate], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [isActive], [ProjectDepartmentId]) VALUES (N'aaf5d5f8-a816-410c-47bf-08db35ce0b51', N'3fa85f64-5717-4562-b3fc-2c963f66afa6', CAST(12 AS Decimal(18, 0)), 2, CAST(N'2023-03-27' AS Date), CAST(N'2023-04-05T17:36:22.320' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', CAST(N'2023-04-14T17:52:16.533' AS DateTime), NULL, 1, N'8df3eadb-31a0-43f2-4c5c-08dafed520f5')
+INSERT [dbo].[ProjectBillings] ([BillingId], [MarketPlaceAccountId], [HourBilled], [Week], [BillingDate], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [isActive], [ProjectDepartmentId]) VALUES (N'd9d7b90a-f7d2-426b-1b00-08db35cebd48', N'bbba7eee-d053-4b48-2b69-08db05cca759', CAST(35 AS Decimal(18, 0)), 3, CAST(N'2023-04-05' AS Date), CAST(N'2023-04-05T17:40:25.847' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', CAST(N'2023-04-14T17:52:06.137' AS DateTime), NULL, 0, N'8df3eadb-31a0-43f2-4c5c-08dafed520f5')
+INSERT [dbo].[ProjectBillings] ([BillingId], [MarketPlaceAccountId], [HourBilled], [Week], [BillingDate], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [isActive], [ProjectDepartmentId]) VALUES (N'9c5115d3-5372-425f-38d8-08db3c03b666', N'fd52db97-dfb0-47c2-8eac-08db35d030ce', CAST(3 AS Decimal(18, 0)), 2, CAST(N'2023-04-11' AS Date), CAST(N'2023-04-13T15:14:44.803' AS DateTime), N'f22b7010-9dee-4eb9-6077-08db3b60dcbe', CAST(N'2023-04-13T16:26:16.873' AS DateTime), NULL, 0, N'031e6b44-e91f-4ad9-04c4-08db05365506')
+GO
+INSERT [dbo].[ProjectDepartments] ([Id], [ProjectId], [DepartmentId], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'8df3eadb-31a0-43f2-4c5c-08dafed520f5', N'a13d71d5-5f7e-43d0-ed50-08dafed51861', N'f58663e0-0c63-443b-66e4-08dafa2c922c', NULL, NULL, CAST(N'2023-04-14T17:52:16.533' AS DateTime), NULL, 0)
+INSERT [dbo].[ProjectDepartments] ([Id], [ProjectId], [DepartmentId], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'031e6b44-e91f-4ad9-04c4-08db05365506', N'fdb47193-6dca-4b4f-4f53-08db053654b5', N'f58663e0-0c63-443b-66e4-08dafa2c922c', CAST(N'2023-02-02T21:28:31.467' AS DateTime), NULL, CAST(N'2023-04-13T16:26:23.797' AS DateTime), NULL, NULL)
+INSERT [dbo].[ProjectDepartments] ([Id], [ProjectId], [DepartmentId], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'c220b268-1344-4ead-9e08-08db05fed933', N'76171f3f-9c5e-4b79-80c2-08db05fed3e9', N'f58663e0-0c63-443b-66e4-08dafa2c922c', CAST(N'2023-02-03T21:23:50.603' AS DateTime), NULL, CAST(N'2023-04-14T17:52:12.163' AS DateTime), NULL, NULL)
+INSERT [dbo].[ProjectDepartments] ([Id], [ProjectId], [DepartmentId], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'fc417af7-d9ea-47b9-2244-08db0e6a75c6', N'7ceeb873-a00a-42fb-00aa-08db008e47c8', N'086c107d-e7a0-4a59-66e3-08dafa2c922c', CAST(N'2023-02-14T15:33:17.243' AS DateTime), NULL, NULL, NULL, NULL)
+INSERT [dbo].[ProjectDepartments] ([Id], [ProjectId], [DepartmentId], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'678ff746-fc15-4a7e-82c8-08db3c58402c', N'dc6d2bbc-f1f5-4380-840f-08db3c583514', N'5c86c545-b582-4f0f-2e4b-08dafd1ac8b4', CAST(N'2023-04-14T01:35:25.273' AS DateTime), NULL, CAST(N'2023-04-14T01:35:35.110' AS DateTime), NULL, NULL)
+INSERT [dbo].[ProjectDepartments] ([Id], [ProjectId], [DepartmentId], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'7709ad8b-f5bc-4885-18c6-08db3c5b0bb6', N'a13d71d5-5f7e-43d0-ed50-08dafed51861', N'8dbefd3c-a973-4bf6-66e9-08dafa2c922c', CAST(N'2023-04-14T01:39:53.953' AS DateTime), NULL, NULL, NULL, NULL)
+INSERT [dbo].[ProjectDepartments] ([Id], [ProjectId], [DepartmentId], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'694e9536-52c9-45d5-7409-08db3cc84c55', N'a13d71d5-5f7e-43d0-ed50-08dafed51861', N'071d0660-7997-47f8-ff34-08db2f7fc64a', CAST(N'2023-04-14T17:33:22.033' AS DateTime), NULL, CAST(N'2023-04-14T17:33:22.050' AS DateTime), NULL, NULL)
+INSERT [dbo].[ProjectDepartments] ([Id], [ProjectId], [DepartmentId], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'27f7e9a7-a603-4b85-610e-08db3d090af3', N'1ef62be6-5880-41fa-a2da-08db3d090829', N'5c86c545-b582-4f0f-2e4b-08dafd1ac8b4', CAST(N'2023-04-14T22:25:25.380' AS DateTime), NULL, NULL, NULL, NULL)
+INSERT [dbo].[ProjectDepartments] ([Id], [ProjectId], [DepartmentId], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'ec4e280c-3aec-4855-15fa-08db3d14808c', N'04f50b28-9b25-483d-64ba-08db3d147e5b', N'f58663e0-0c63-443b-66e4-08dafa2c922c', CAST(N'2023-04-14T23:47:27.033' AS DateTime), NULL, NULL, NULL, NULL)
+INSERT [dbo].[ProjectDepartments] ([Id], [ProjectId], [DepartmentId], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'3a24d19c-b3f8-4bc7-5eae-08db3f2d2618', N'2c2e9c49-7e81-4d8c-8bf6-08db3f2d25ef', N'f58663e0-0c63-443b-66e4-08dafa2c922c', CAST(N'2023-04-17T15:48:54.833' AS DateTime), NULL, NULL, NULL, NULL)
+INSERT [dbo].[ProjectDepartments] ([Id], [ProjectId], [DepartmentId], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'c5a9bccb-2fae-4d03-5eaf-08db3f2d2618', N'9ff91e9d-2395-4d2b-8bf7-08db3f2d25ef', N'f58663e0-0c63-443b-66e4-08dafa2c922c', CAST(N'2023-04-17T19:23:10.947' AS DateTime), NULL, NULL, NULL, NULL)
+INSERT [dbo].[ProjectDepartments] ([Id], [ProjectId], [DepartmentId], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'ee8a3160-f322-4727-d9ab-08db40b8c8c9', N'fdb47193-6dca-4b4f-4f53-08db053654b5', N'f58663e0-0c63-443b-66e4-08dafa2c922c', CAST(N'2023-04-19T15:00:58.997' AS DateTime), NULL, NULL, NULL, NULL)
+INSERT [dbo].[ProjectDepartments] ([Id], [ProjectId], [DepartmentId], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'4c62be1b-16e2-4b48-4ec4-08db40dd962c', N'fdb47193-6dca-4b4f-4f53-08db053654b5', N'e8c53dae-d906-4375-66e7-08dafa2c922c', CAST(N'2023-04-19T19:24:25.670' AS DateTime), NULL, NULL, NULL, NULL)
+INSERT [dbo].[ProjectDepartments] ([Id], [ProjectId], [DepartmentId], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'56a51ff0-f0e7-4664-01d2-08db4183ec80', N'f62aa77d-d0ab-4df0-259e-08db4183e981', N'086c107d-e7a0-4a59-66e3-08dafa2c922c', CAST(N'2023-04-20T15:15:07.237' AS DateTime), NULL, NULL, NULL, NULL)
+INSERT [dbo].[ProjectDepartments] ([Id], [ProjectId], [DepartmentId], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'e15c717f-4ef9-4ccd-42b1-08db41bbec23', N'72430e6f-e366-4a76-9c79-08db41bbc21a', N'086c107d-e7a0-4a59-66e3-08dafa2c922c', CAST(N'2023-04-20T21:55:57.960' AS DateTime), NULL, NULL, NULL, NULL)
+INSERT [dbo].[ProjectDepartments] ([Id], [ProjectId], [DepartmentId], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [IsActive]) VALUES (N'c6fa5bbc-4aeb-4372-42b2-08db41bbec23', N'72430e6f-e366-4a76-9c79-08db41bbc21a', N'365c2eb7-b948-433e-66e5-08dafa2c922c', CAST(N'2023-04-20T21:55:57.960' AS DateTime), NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[ProjectHealth] ([Id], [ProjectHealthRate], [Comments], [Date], [EmployeeId], [ProjectId], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy]) VALUES (N'afa113e3-6824-43bf-79a3-08db1011f972', 2, N'Have to improve the skills as per the requirement', CAST(N'2023-01-11T00:00:00.000' AS DateTime), N'809fb396-8ce2-4892-d370-08db039b3d2e', N'7ceeb873-a00a-42fb-00aa-08db008e47c8', CAST(N'2023-02-16T17:05:59.663' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', CAST(N'2023-04-06T00:47:14.117' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073')
+INSERT [dbo].[ProjectHealth] ([Id], [ProjectHealthRate], [Comments], [Date], [EmployeeId], [ProjectId], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy]) VALUES (N'4b522b07-1d92-4537-c5a5-08db39ab15b1', 2, N'It is old', CAST(N'2023-04-03T00:00:00.000' AS DateTime), N'ce34080d-168a-4c7c-d37a-08db2081e213', N'a13d71d5-5f7e-43d0-ed50-08dafed51861', CAST(N'2023-04-10T15:35:16.930' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', CAST(N'2023-04-11T17:27:26.177' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073')
+INSERT [dbo].[ProjectHealth] ([Id], [ProjectHealthRate], [Comments], [Date], [EmployeeId], [ProjectId], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy]) VALUES (N'90b6dff8-c4ca-4700-84fb-08db400f88f1', 1, N'Project is good', CAST(N'2023-04-17T00:00:00.000' AS DateTime), N'04fd8191-d6f1-40ba-0dd3-08dafa2ce073', N'7ceeb873-a00a-42fb-00aa-08db008e47c8', CAST(N'2023-04-18T18:49:26.943' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', NULL, NULL)
+GO
+INSERT [dbo].[Projects] ([ProjectId], [ClientId], [Accounts], [ContractName], [ContractType], [HoursPerWeek], [BillingType], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [Status], [IsActive], [EndDate], [ProjectReview], [ProjectUrl], [Rating], [StartDate]) VALUES (N'a13d71d5-5f7e-43d0-ed50-08dafed51861', N'8825d4b1-fa4b-49ae-1e6e-08db31f6443d', 2, N'WclSSssssss', 2, N'35', 2, CAST(N'2023-01-25T19:03:58.870' AS DateTime), NULL, CAST(N'2023-04-13T20:24:03.103' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', 2, 1, CAST(N'2023-02-03T21:23:45.537' AS DateTime), N'Good', N'https://absc.com', CAST(5.00 AS Decimal(18, 2)), CAST(N'2023-02-03T21:23:45.537' AS DateTime))
+INSERT [dbo].[Projects] ([ProjectId], [ClientId], [Accounts], [ContractName], [ContractType], [HoursPerWeek], [BillingType], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [Status], [IsActive], [EndDate], [ProjectReview], [ProjectUrl], [Rating], [StartDate]) VALUES (N'3dfbda24-fbb7-4dba-d2b9-08db008d3373', N'8825d4b1-fa4b-49ae-1e6e-08db31f6443d', 2, N'Salient', 1, N'0', 1, CAST(N'2023-01-27T23:10:20.043' AS DateTime), NULL, CAST(N'2023-04-13T19:38:15.723' AS DateTime), N'f22b7010-9dee-4eb9-6077-08db3b60dcbe', 2, 0, CAST(N'2023-02-03T21:23:45.537' AS DateTime), N'Good', N'https://absc.com', CAST(5.00 AS Decimal(18, 2)), CAST(N'2023-02-03T21:23:45.537' AS DateTime))
+INSERT [dbo].[Projects] ([ProjectId], [ClientId], [Accounts], [ContractName], [ContractType], [HoursPerWeek], [BillingType], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [Status], [IsActive], [EndDate], [ProjectReview], [ProjectUrl], [Rating], [StartDate]) VALUES (N'7ceeb873-a00a-42fb-00aa-08db008e47c8', N'77b34938-e2ff-493c-21cc-08dafd5576d6', 1, N'JET', 1, N'45', 1, CAST(N'2023-01-27T23:16:27.527' AS DateTime), NULL, CAST(N'2023-04-13T20:24:05.927' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', 2, 1, CAST(N'2023-02-03T21:23:45.537' AS DateTime), N'Good', N'https://absc.com', CAST(5.00 AS Decimal(18, 2)), CAST(N'2023-02-03T21:23:45.537' AS DateTime))
+INSERT [dbo].[Projects] ([ProjectId], [ClientId], [Accounts], [ContractName], [ContractType], [HoursPerWeek], [BillingType], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [Status], [IsActive], [EndDate], [ProjectReview], [ProjectUrl], [Rating], [StartDate]) VALUES (N'fdb47193-6dca-4b4f-4f53-08db053654b5', N'77b34938-e2ff-493c-21cc-08dafd5576d6', 1, N'envase', 1, N'0', 1, CAST(N'2023-02-02T21:28:31.243' AS DateTime), NULL, CAST(N'2023-04-14T01:40:15.857' AS DateTime), NULL, 1, 0, CAST(N'2023-02-03T21:23:45.537' AS DateTime), N'Good', N'https://absc.com', CAST(5.00 AS Decimal(18, 2)), CAST(N'2023-02-03T21:23:45.537' AS DateTime))
+INSERT [dbo].[Projects] ([ProjectId], [ClientId], [Accounts], [ContractName], [ContractType], [HoursPerWeek], [BillingType], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [Status], [IsActive], [EndDate], [ProjectReview], [ProjectUrl], [Rating], [StartDate]) VALUES (N'76171f3f-9c5e-4b79-80c2-08db05fed3e9', N'847f3865-59c9-4fbe-fafe-08dafd1b5af0', 1, N'abcc', 1, N'0', 1, CAST(N'2023-02-03T21:23:45.537' AS DateTime), NULL, NULL, NULL, 2, 0, CAST(N'2023-02-03T21:23:45.537' AS DateTime), N'Good', N'https://absc.com', CAST(5.00 AS Decimal(18, 2)), CAST(N'2023-02-03T21:23:45.537' AS DateTime))
+INSERT [dbo].[Projects] ([ProjectId], [ClientId], [Accounts], [ContractName], [ContractType], [HoursPerWeek], [BillingType], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [Status], [IsActive], [EndDate], [ProjectReview], [ProjectUrl], [Rating], [StartDate]) VALUES (N'bada2ea7-e6ea-4dc2-52aa-08db31f5944e', N'847f3865-59c9-4fbe-fafe-08dafd1b5af0', 1, N'nnn', 1, N'40', 2, CAST(N'2023-03-31T20:08:22.923' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', NULL, NULL, 1, 0, CAST(N'2023-02-03T21:23:45.537' AS DateTime), N'Good', N'https://absc.com', CAST(5.00 AS Decimal(18, 2)), CAST(N'2023-02-03T21:23:45.537' AS DateTime))
+INSERT [dbo].[Projects] ([ProjectId], [ClientId], [Accounts], [ContractName], [ContractType], [HoursPerWeek], [BillingType], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [Status], [IsActive], [EndDate], [ProjectReview], [ProjectUrl], [Rating], [StartDate]) VALUES (N'9b6be41e-22c8-401e-3bd7-08db31f66752', N'8825d4b1-fa4b-49ae-1e6e-08db31f6443d', 1, N'nnnsssnnnsssssss', 1, N'40', 2, CAST(N'2023-03-31T20:14:16.867' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', CAST(N'2023-04-13T17:04:45.953' AS DateTime), N'f22b7010-9dee-4eb9-6077-08db3b60dcbe', 2, 0, CAST(N'2023-02-03T21:23:45.537' AS DateTime), N'Good', N'https://absc.com', CAST(5.00 AS Decimal(18, 2)), CAST(N'2023-02-03T21:23:45.537' AS DateTime))
+INSERT [dbo].[Projects] ([ProjectId], [ClientId], [Accounts], [ContractName], [ContractType], [HoursPerWeek], [BillingType], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [Status], [IsActive], [EndDate], [ProjectReview], [ProjectUrl], [Rating], [StartDate]) VALUES (N'538f271d-21f4-4ede-df68-08db35cd3009', N'c7af5322-5663-4dd8-8bef-08db35ca0826', NULL, N'Chouhans', 1, N'35', 1, CAST(N'2023-04-05T17:29:19.443' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', CAST(N'2023-04-05T17:34:17.967' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', 1, 0, NULL, N'Good', N'https://absc.com', CAST(3.00 AS Decimal(18, 2)), CAST(N'2023-02-03T21:23:45.537' AS DateTime))
+INSERT [dbo].[Projects] ([ProjectId], [ClientId], [Accounts], [ContractName], [ContractType], [HoursPerWeek], [BillingType], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [Status], [IsActive], [EndDate], [ProjectReview], [ProjectUrl], [Rating], [StartDate]) VALUES (N'2966307a-aad6-47d8-927d-08db3c12004a', N'8825d4b1-fa4b-49ae-1e6e-08db31f6443d', 1, N'AA', 2, N'0', 2, CAST(N'2023-04-13T16:57:01.520' AS DateTime), N'f22b7010-9dee-4eb9-6077-08db3b60dcbe', CAST(N'2023-04-20T15:05:40.400' AS DateTime), NULL, 2, 1, NULL, N'Bad', N'https://absc.com', CAST(3.50 AS Decimal(18, 2)), CAST(N'2023-02-03T21:23:45.537' AS DateTime))
+INSERT [dbo].[Projects] ([ProjectId], [ClientId], [Accounts], [ContractName], [ContractType], [HoursPerWeek], [BillingType], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [Status], [IsActive], [EndDate], [ProjectReview], [ProjectUrl], [Rating], [StartDate]) VALUES (N'fab5a0a0-25f6-4e46-927e-08db3c12004a', N'c7af5322-5663-4dd8-8bef-08db35ca0826', 2, N'aa', 2, N'0', 2, CAST(N'2023-04-13T17:15:33.260' AS DateTime), N'f22b7010-9dee-4eb9-6077-08db3b60dcbe', CAST(N'2023-04-14T17:32:28.067' AS DateTime), NULL, 2, 1, NULL, N'Bad', N'https://absc.com', CAST(3.50 AS Decimal(18, 2)), CAST(N'2023-02-03T21:23:45.537' AS DateTime))
+INSERT [dbo].[Projects] ([ProjectId], [ClientId], [Accounts], [ContractName], [ContractType], [HoursPerWeek], [BillingType], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [Status], [IsActive], [EndDate], [ProjectReview], [ProjectUrl], [Rating], [StartDate]) VALUES (N'b5719a56-fc4b-46be-a647-08db3c1649e7', N'7362513d-1278-4566-837a-08db35c98ee4', 2, N'aaa', 1, N'5', 2, CAST(N'2023-04-13T17:27:43.537' AS DateTime), N'f22b7010-9dee-4eb9-6077-08db3b60dcbe', CAST(N'2023-04-14T21:33:37.030' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', 2, 0, NULL, N'Bad', N'https://absc.com', CAST(3.50 AS Decimal(18, 2)), CAST(N'2023-02-03T21:23:45.537' AS DateTime))
+INSERT [dbo].[Projects] ([ProjectId], [ClientId], [Accounts], [ContractName], [ContractType], [HoursPerWeek], [BillingType], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [Status], [IsActive], [EndDate], [ProjectReview], [ProjectUrl], [Rating], [StartDate]) VALUES (N'0bb5e5d5-8674-4992-691c-08db3c5478f8', N'c7af5322-5663-4dd8-8bef-08db35ca0826', 1, N'Kumar', 3, N'35', 2, CAST(N'2023-04-14T00:52:51.917' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', NULL, NULL, 2, 0, NULL, N'Bad', N'https://absc.com', CAST(3.50 AS Decimal(18, 2)), CAST(N'2023-02-03T21:23:45.537' AS DateTime))
+INSERT [dbo].[Projects] ([ProjectId], [ClientId], [Accounts], [ContractName], [ContractType], [HoursPerWeek], [BillingType], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [Status], [IsActive], [EndDate], [ProjectReview], [ProjectUrl], [Rating], [StartDate]) VALUES (N'dc6d2bbc-f1f5-4380-840f-08db3c583514', N'7362513d-1278-4566-837a-08db35c98ee4', 2, N'x', 2, N'40', 1, CAST(N'2023-04-14T01:19:35.860' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', CAST(N'2023-04-14T01:35:14.237' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', 2, 0, NULL, N'Bad', N'https://absc.com', CAST(3.00 AS Decimal(18, 2)), CAST(N'2023-02-03T21:23:45.537' AS DateTime))
+INSERT [dbo].[Projects] ([ProjectId], [ClientId], [Accounts], [ContractName], [ContractType], [HoursPerWeek], [BillingType], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [Status], [IsActive], [EndDate], [ProjectReview], [ProjectUrl], [Rating], [StartDate]) VALUES (N'8f3f1626-3a96-4c8c-1a61-08db3c5b0b90', N'7362513d-1278-4566-837a-08db35c98ee4', 2, N'class', 2, N'0', 2, CAST(N'2023-04-14T01:39:53.783' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', CAST(N'2023-04-14T01:40:47.847' AS DateTime), NULL, 2, 1, NULL, N'Bad', N'https://absc.com', CAST(3.00 AS Decimal(18, 2)), CAST(N'2023-02-03T21:23:45.537' AS DateTime))
+INSERT [dbo].[Projects] ([ProjectId], [ClientId], [Accounts], [ContractName], [ContractType], [HoursPerWeek], [BillingType], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [Status], [IsActive], [EndDate], [ProjectReview], [ProjectUrl], [Rating], [StartDate]) VALUES (N'81838c0d-6e93-4a96-a583-08db3cc84c50', N'77b34938-e2ff-493c-21cc-08dafd5576d6', 2, N'xxxxxxxxxxxxxx', 1, N'0', 2, CAST(N'2023-04-14T14:41:57.463' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', CAST(N'2023-04-17T19:23:18.300' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', 2, 1, NULL, N'Bad', N'https://absc.com', CAST(2.00 AS Decimal(18, 2)), CAST(N'2023-02-03T21:23:45.537' AS DateTime))
+INSERT [dbo].[Projects] ([ProjectId], [ClientId], [Accounts], [ContractName], [ContractType], [HoursPerWeek], [BillingType], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [Status], [IsActive], [EndDate], [ProjectReview], [ProjectUrl], [Rating], [StartDate]) VALUES (N'1ef62be6-5880-41fa-a2da-08db3d090829', N'77b34938-e2ff-493c-21cc-08dafd5576d6', 1, N'dcghfauyfgku', 2, N'40', 1, CAST(N'2023-04-14T22:25:20.680' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', NULL, NULL, 1, 1, NULL, N'Good', N'https://absc.com', CAST(5.00 AS Decimal(18, 2)), CAST(N'2023-02-03T21:23:45.537' AS DateTime))
+INSERT [dbo].[Projects] ([ProjectId], [ClientId], [Accounts], [ContractName], [ContractType], [HoursPerWeek], [BillingType], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [Status], [IsActive], [EndDate], [ProjectReview], [ProjectUrl], [Rating], [StartDate]) VALUES (N'04f50b28-9b25-483d-64ba-08db3d147e5b', N'8caaaca5-9158-478f-ef58-08db3cc791d1', 1, N'xnxnxnxnxnxx', 2, N'50', 1, CAST(N'2023-04-14T23:47:23.500' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', NULL, NULL, 2, 1, NULL, N'Good', N'https://absc.com', CAST(5.00 AS Decimal(18, 2)), CAST(N'2023-02-03T21:23:45.537' AS DateTime))
+INSERT [dbo].[Projects] ([ProjectId], [ClientId], [Accounts], [ContractName], [ContractType], [HoursPerWeek], [BillingType], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [Status], [IsActive], [EndDate], [ProjectReview], [ProjectUrl], [Rating], [StartDate]) VALUES (N'2c2e9c49-7e81-4d8c-8bf6-08db3f2d25ef', N'c7af5322-5663-4dd8-8bef-08db35ca0826', 2, N'FFFFFFFF', 1, N'0', 1, CAST(N'2023-04-17T15:48:54.620' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', NULL, NULL, 2, 1, NULL, N'Good', N'https://absc.com', CAST(4.50 AS Decimal(18, 2)), CAST(N'2023-02-03T21:23:45.537' AS DateTime))
+INSERT [dbo].[Projects] ([ProjectId], [ClientId], [Accounts], [ContractName], [ContractType], [HoursPerWeek], [BillingType], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [Status], [IsActive], [EndDate], [ProjectReview], [ProjectUrl], [Rating], [StartDate]) VALUES (N'9ff91e9d-2395-4d2b-8bf7-08db3f2d25ef', N'c7af5322-5663-4dd8-8bef-08db35ca0826', 2, N'xxxxxxxxxxxxxxxx', 2, N'0', 2, CAST(N'2023-04-17T19:23:10.927' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', NULL, NULL, 2, 1, NULL, N'Good', N'https://absc.com', CAST(4.50 AS Decimal(18, 2)), CAST(N'2023-02-03T21:23:45.537' AS DateTime))
+INSERT [dbo].[Projects] ([ProjectId], [ClientId], [Accounts], [ContractName], [ContractType], [HoursPerWeek], [BillingType], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [Status], [IsActive], [EndDate], [ProjectReview], [ProjectUrl], [Rating], [StartDate]) VALUES (N'f62aa77d-d0ab-4df0-259e-08db4183e981', N'b4b84c23-9a66-485b-2e49-08db40fa4fa3', 1, N'Smart Build', 1, N'40', 1, CAST(N'2023-04-20T15:15:02.423' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', NULL, NULL, 2, 1, NULL, N'Good', N'https://absc.com', CAST(4.50 AS Decimal(18, 2)), CAST(N'2023-02-03T21:23:45.537' AS DateTime))
+INSERT [dbo].[Projects] ([ProjectId], [ClientId], [Accounts], [ContractName], [ContractType], [HoursPerWeek], [BillingType], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [Status], [IsActive], [EndDate], [ProjectReview], [ProjectUrl], [Rating], [StartDate]) VALUES (N'06a0dea2-fbaa-4715-0549-08db41babff6', N'e521dc59-5f16-4ec1-b8eb-08db40f9ffd2', 1, N'CRM', 1, N'40', 1, CAST(N'2023-04-20T21:47:34.393' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', NULL, NULL, 2, 1, NULL, N'Good', N'https://crm.com', CAST(0.00 AS Decimal(18, 2)), CAST(N'2023-04-05T00:00:00.000' AS DateTime))
+INSERT [dbo].[Projects] ([ProjectId], [ClientId], [Accounts], [ContractName], [ContractType], [HoursPerWeek], [BillingType], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy], [Status], [IsActive], [EndDate], [ProjectReview], [ProjectUrl], [Rating], [StartDate]) VALUES (N'72430e6f-e366-4a76-9c79-08db41bbc21a', N'b4b84c23-9a66-485b-2e49-08db40fa4fa3', 1, N'Supreme', 1, N'40', 1, CAST(N'2023-04-20T21:55:57.953' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', NULL, NULL, 2, 1, NULL, N'Excellent', N'https://www.google.com', CAST(0.00 AS Decimal(18, 2)), CAST(N'2023-04-03T00:00:00.000' AS DateTime))
+GO
+INSERT [dbo].[Upwork] ([UpworkId], [UpworkName], [IsActive], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy]) VALUES (N'698e1c8f-df5a-49e1-10c0-08db40239607', N'Amit', 1, CAST(N'2023-04-18T21:12:59.373' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', CAST(N'2023-04-19T14:27:22.830' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073')
+INSERT [dbo].[Upwork] ([UpworkId], [UpworkName], [IsActive], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy]) VALUES (N'a7ae2ab5-8590-4e97-10c1-08db40239607', N'Ikbal-Id', 1, CAST(N'2023-04-18T21:15:03.120' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', NULL, NULL)
+INSERT [dbo].[Upwork] ([UpworkId], [UpworkName], [IsActive], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy]) VALUES (N'e8a61dab-42e6-456f-10c2-08db40239607', N'Jasmeet-Id', 1, CAST(N'2023-04-18T21:15:08.227' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', NULL, NULL)
+INSERT [dbo].[Upwork] ([UpworkId], [UpworkName], [IsActive], [CreatedDate], [CreatedBy], [LastModified], [LastModifiedBy]) VALUES (N'a7cd5c44-5da8-4b32-10c3-08db40239607', N'Rahul-Id', 1, CAST(N'2023-04-18T21:15:14.247' AS DateTime), N'7c91e4be-70e0-4d7e-0dd2-08dafa2ce073', NULL, NULL)
+GO
+ALTER TABLE [dbo].[Departments] ADD  CONSTRAINT [DF_Departments_IsActive]  DEFAULT ((1)) FOR [IsActive]
+GO
+ALTER TABLE [dbo].[Employees] ADD  CONSTRAINT [DF_TblEmployeeMaster_EmployeeId]  DEFAULT (newid()) FOR [EmployeeId]
+GO
+ALTER TABLE [dbo].[Attendence]  WITH CHECK ADD  CONSTRAINT [FK_Attendence_Employees] FOREIGN KEY([EmployeeId])
+REFERENCES [dbo].[Employees] ([EmployeeId])
+GO
+ALTER TABLE [dbo].[Attendence] CHECK CONSTRAINT [FK_Attendence_Employees]
+GO
+ALTER TABLE [dbo].[Clients]  WITH CHECK ADD  CONSTRAINT [FK_Clients_Marketplace] FOREIGN KEY([MarketPlaceAccountsId])
+REFERENCES [dbo].[MarketPlaceAccounts] ([Id])
+GO
+ALTER TABLE [dbo].[Clients] CHECK CONSTRAINT [FK_Clients_Marketplace]
+GO
+ALTER TABLE [dbo].[Connects]  WITH CHECK ADD  CONSTRAINT [FK__Connects__Depart__3F466844] FOREIGN KEY([DepartmentId])
+REFERENCES [dbo].[Departments] ([DepartmentId])
+GO
+ALTER TABLE [dbo].[Connects] CHECK CONSTRAINT [FK__Connects__Depart__3F466844]
+GO
+ALTER TABLE [dbo].[Connects]  WITH CHECK ADD  CONSTRAINT [FK_Connects_Employees] FOREIGN KEY([EmployeeId])
+REFERENCES [dbo].[Employees] ([EmployeeId])
+GO
+ALTER TABLE [dbo].[Connects] CHECK CONSTRAINT [FK_Connects_Employees]
+GO
+ALTER TABLE [dbo].[Connects]  WITH CHECK ADD  CONSTRAINT [FK_Connects_MarketPlaceAccounts] FOREIGN KEY([MarketPlaceAccountsId])
+REFERENCES [dbo].[MarketPlaceAccounts] ([Id])
+GO
+ALTER TABLE [dbo].[Connects] CHECK CONSTRAINT [FK_Connects_MarketPlaceAccounts]
+GO
+ALTER TABLE [dbo].[EmployeeDocuments]  WITH CHECK ADD  CONSTRAINT [FK_EmployeeDocuments_Employees] FOREIGN KEY([EmpDocId])
+REFERENCES [dbo].[Employees] ([EmployeeId])
+GO
+ALTER TABLE [dbo].[EmployeeDocuments] CHECK CONSTRAINT [FK_EmployeeDocuments_Employees]
+GO
+ALTER TABLE [dbo].[EmployeeProjects]  WITH CHECK ADD  CONSTRAINT [FK__EmployeeP__Proje__534D60F1] FOREIGN KEY([ProjectId])
+REFERENCES [dbo].[Projects] ([ProjectId])
+GO
+ALTER TABLE [dbo].[EmployeeProjects] CHECK CONSTRAINT [FK__EmployeeP__Proje__534D60F1]
+GO
+ALTER TABLE [dbo].[EmployeeProjects]  WITH CHECK ADD  CONSTRAINT [FK_EmployeeProject_Employees] FOREIGN KEY([EmployeeId])
+REFERENCES [dbo].[Employees] ([EmployeeId])
+GO
+ALTER TABLE [dbo].[EmployeeProjects] CHECK CONSTRAINT [FK_EmployeeProject_Employees]
+GO
+ALTER TABLE [dbo].[Employees]  WITH CHECK ADD  CONSTRAINT [FK_Employees_Departments] FOREIGN KEY([DepartmentId])
+REFERENCES [dbo].[Departments] ([DepartmentId])
+GO
+ALTER TABLE [dbo].[Employees] CHECK CONSTRAINT [FK_Employees_Departments]
+GO
+ALTER TABLE [dbo].[Employees]  WITH CHECK ADD  CONSTRAINT [FK_Employees_Employees] FOREIGN KEY([AssignedTo])
+REFERENCES [dbo].[Employees] ([EmployeeId])
+GO
+ALTER TABLE [dbo].[Employees] CHECK CONSTRAINT [FK_Employees_Employees]
+GO
+ALTER TABLE [dbo].[EmployeeSalaries]  WITH CHECK ADD  CONSTRAINT [FK_EmployeeSalaries_Employees] FOREIGN KEY([EmployeeId])
+REFERENCES [dbo].[Employees] ([EmployeeId])
+GO
+ALTER TABLE [dbo].[EmployeeSalaries] CHECK CONSTRAINT [FK_EmployeeSalaries_Employees]
+GO
+ALTER TABLE [dbo].[Leaves]  WITH CHECK ADD  CONSTRAINT [FK_Leaves_Employees] FOREIGN KEY([EmployeeId])
+REFERENCES [dbo].[Employees] ([EmployeeId])
+GO
+ALTER TABLE [dbo].[Leaves] CHECK CONSTRAINT [FK_Leaves_Employees]
+GO
+ALTER TABLE [dbo].[ProjectBillings]  WITH CHECK ADD  CONSTRAINT [FK_ProjectBillings_MarketPlaceAccounts] FOREIGN KEY([MarketPlaceAccountId])
+REFERENCES [dbo].[MarketPlaceAccounts] ([Id])
+GO
+ALTER TABLE [dbo].[ProjectBillings] CHECK CONSTRAINT [FK_ProjectBillings_MarketPlaceAccounts]
+GO
+ALTER TABLE [dbo].[ProjectBillings]  WITH CHECK ADD  CONSTRAINT [FK_ProjectBillings_ProjectDepartments] FOREIGN KEY([ProjectDepartmentId])
+REFERENCES [dbo].[ProjectDepartments] ([Id])
+GO
+ALTER TABLE [dbo].[ProjectBillings] CHECK CONSTRAINT [FK_ProjectBillings_ProjectDepartments]
+GO
+ALTER TABLE [dbo].[ProjectDepartments]  WITH CHECK ADD  CONSTRAINT [FK_ProjectDepartment_Departments] FOREIGN KEY([DepartmentId])
+REFERENCES [dbo].[Departments] ([DepartmentId])
+GO
+ALTER TABLE [dbo].[ProjectDepartments] CHECK CONSTRAINT [FK_ProjectDepartment_Departments]
+GO
+ALTER TABLE [dbo].[ProjectDepartments]  WITH CHECK ADD  CONSTRAINT [FK_ProjectDepartment_Projects] FOREIGN KEY([ProjectId])
+REFERENCES [dbo].[Projects] ([ProjectId])
+GO
+ALTER TABLE [dbo].[ProjectDepartments] CHECK CONSTRAINT [FK_ProjectDepartment_Projects]
+GO
+ALTER TABLE [dbo].[ProjectHealth]  WITH CHECK ADD  CONSTRAINT [FK_ProjectHealth_Employees] FOREIGN KEY([EmployeeId])
+REFERENCES [dbo].[Employees] ([EmployeeId])
+GO
+ALTER TABLE [dbo].[ProjectHealth] CHECK CONSTRAINT [FK_ProjectHealth_Employees]
+GO
+ALTER TABLE [dbo].[ProjectHealth]  WITH CHECK ADD  CONSTRAINT [FK_ProjectHealth_Projects] FOREIGN KEY([ProjectId])
+REFERENCES [dbo].[Projects] ([ProjectId])
+GO
+ALTER TABLE [dbo].[ProjectHealth] CHECK CONSTRAINT [FK_ProjectHealth_Projects]
+GO
+ALTER TABLE [dbo].[Projects]  WITH CHECK ADD  CONSTRAINT [FK__Projects__Client] FOREIGN KEY([ClientId])
+REFERENCES [dbo].[Clients] ([ClientId])
+GO
+ALTER TABLE [dbo].[Projects] CHECK CONSTRAINT [FK__Projects__Client]
+GO
