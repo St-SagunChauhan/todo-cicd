@@ -51,7 +51,7 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets. }}
+          username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.STCRM_SECRET }}
           port: ${{ secrets.SERVER_PORT }}
           script: |
