@@ -26,8 +26,16 @@ jobs:
         with:
           node-version: "14"
 
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+
+      - run: npm ci
+
       - name: Install Dependencies
-        run: cd FrontEnd_New_Design;  npm install --f;
+        run: cd FrontEnd_New_Design;  npm install --f --if-present;
 
       - name: Build React App
         run: cd FrontEnd_New_Design; npm run build;
