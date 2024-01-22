@@ -1,14 +1,14 @@
-import React, { FC, ReactNode, startTransition, useState } from "react";
+import { FC, ReactNode, useState } from "react";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
-// import stLogo from "../assets/images/logo.jpg";
 import stLogo from "../assets/images/supreme_logo_footer-white.svg";
-import { Layout, Menu, Button, theme, Row, Col, Divider } from "antd";
+import { Layout, Button, Row, Col, Divider } from "antd";
 import TopBar from "./TopBar/TopBar";
 import BreadCrumb from "./Breadcrumb/Breadcrumb";
-import { useNavigate } from "react-router-dom";
 import NavbarItems from "./NavbarItems";
 import authService from "../services/authServices";
 import empService from "../services/empRequest";
+import packageJson from "../../package.json";
+
 const { Header, Sider, Content } = Layout;
 
 type Props = {
@@ -94,12 +94,12 @@ const MainLayout: FC<Props> = (typeProps: Props) => {
             />
           </div>
           <Divider className="devider" />
-          <div className="scrollAbleY" style={{ height: "100%"}}>
+          <div className="scrollAbleY" style={{ height: "100%" }}>
             <NavbarItems loading={loading} />
           </div>
           <Divider className="devider bottomDevider" />
           <div className="footer">
-            <h1>Version 2.0</h1>
+            <h1>Version {packageJson.version}</h1>
           </div>
         </Sider>
         <Layout>
@@ -112,9 +112,10 @@ const MainLayout: FC<Props> = (typeProps: Props) => {
               borderRadius: "10px",
             }}
           >
-         
-            <Row gutter={{ xs: 3, sm: 6 }}
-            style={{ justifyContent: "space-between" }}>
+            <Row
+              gutter={{ xs: 3, sm: 6 }}
+              style={{ justifyContent: "space-between" }}
+            >
               <Col className="gutter-row" span={9}>
                 <Button
                   type="text"
@@ -134,7 +135,7 @@ const MainLayout: FC<Props> = (typeProps: Props) => {
                   }}
                 />
               </Col>
-              <Col span={13} >
+              <Col span={13}>
                 <div>
                   {/* Display "Stop Impersonation" button when impersonation is true */}
                   {isPersonating === "true" && (

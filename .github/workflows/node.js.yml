@@ -30,17 +30,13 @@ jobs:
         env:
           CI: false
 
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: app-build
-          path: dist
-
-      - name: Download build artifacts
-        uses: actions/download-artifact@v3
-        with:
-          name: app-build
-      - run: ls dist
+      # - name: Deploy to IIS
+      #   run: |
+      #     stop-webapppool {iis apppool name}
+      #     stop-iissite -Name {iis website name} -Confirm: $false
+      #     Copy-Item ./{same "publish" name from above}/* F:/Websites/{folder path} -Recurse -Force
+      #     start-webapppool {iis apppool name}
+      #     start-iissite {iis website name}
 
     # - name: Deploy to Main IIS Server
     #       if: github.event_name == 'push' && github.ref == 'refs/heads/main'
