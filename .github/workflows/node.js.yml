@@ -26,11 +26,6 @@ jobs:
         with:
           node-version: "14"
 
-      - name: Print Working Directory
-        run: |
-          ls -al
-          pwd
-
       - name: Install Dependencies
         run: npm install --f
 
