@@ -22,7 +22,7 @@ jobs:
           node-version: "14"
 
       - name: Install Dependencies
-        run: npm install
+        run: npm install --f
 
       - name: Build React App
         run: npm run build
