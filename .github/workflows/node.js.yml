@@ -26,9 +26,6 @@ jobs:
         with:
           node-version: "14"
 
-      - name: create directory
-        run: cd FrontEnd_New_Design
-
       - name: Install Dependencies
         run: cd FrontEnd_New_Design;  npm install --f;
 
