@@ -41,13 +41,13 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: app-build
-          path: build
+          path: dist
 
       - name: Download build artifacts
         uses: actions/download-artifact@v3
         with:
           name: app-build
-      - run: ls build
+      - run: ls dist
 
     # - name: Deploy to Main IIS Server
     #       if: github.event_name == 'push' && github.ref == 'refs/heads/main'
