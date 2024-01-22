@@ -30,7 +30,7 @@ jobs:
         run: cd FrontEnd_New_Design
 
       - name: Install Dependencies
-        run: npm install --f
+        run: cd FrontEnd_New_Design;  npm install --f;
 
       - name: Build React App
-        run: npm run build
+        run: cd FrontEnd_New_Design; npm run build;
