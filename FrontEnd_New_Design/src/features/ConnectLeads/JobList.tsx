@@ -47,6 +47,7 @@ interface DataType {
   isActive?: string;
   billingStatus?: string;
   billingType?: string;
+  communicationMode: string;
 }
 
 interface Props {
@@ -312,8 +313,8 @@ const JobList = (props: Props) => {
     },
     {
       title: "Communication Mode",
-      dataIndex: "communicationmode",
-      key: "communicationmode",
+      dataIndex: "communicationMode",
+      key: "communicationMode",
     },
     {
       title: "Status",
@@ -369,6 +370,7 @@ const JobList = (props: Props) => {
         billingType: data.billingType,
         amountSpent: data.amountSpent,
         employeeId: data.employeeId,
+        communicationMode: data.communicationMode,
       };
     });
 

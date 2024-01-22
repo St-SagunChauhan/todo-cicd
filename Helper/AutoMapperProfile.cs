@@ -110,8 +110,8 @@ namespace ST.ERP.Helper
                 .ForMember(dest => dest.UpworkName, opt => opt.MapFrom(src => src.Upworks.Name))
                 .ForMember(dest => dest.CommunicationMode, opt => opt.MapFrom(src => src.CommunicationMode))
                 .ForMember(dest => dest.BillingStatus, opt => opt.MapFrom(src => src.BillingStatus))
-                //.ForMember(dest => dest.EmployeeId,
-                //    opt => opt.MapFrom(src => src.EmployeeProjects.Select(x => x.EmployeeId).ToList()))
+                .ForMember(dest => dest.EmployeeId,
+                    opt => opt.MapFrom(src => src.EmployeeProjects.Select(x => x.EmployeeId).FirstOrDefault()))
                 .ForMember(dest => dest.DepartmentId,
                     opt => opt.MapFrom(src => src.ProjectDepartments.Select(x => x.DepartmentId).ToList()))
                 .ForMember(dest => dest.ProjectHealthRate, opt => opt.MapFrom(src => src.ProjectHealth.ProjectHealthRate.ToString() ?? string.Empty))

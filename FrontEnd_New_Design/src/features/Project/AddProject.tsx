@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import projectService from "../../services/projectRequest";
 import {
@@ -11,9 +11,7 @@ import {
   Select,
   message,
 } from "antd";
-import {
-  CloseOutlined,
-} from "@ant-design/icons";
+import { CloseOutlined } from "@ant-design/icons";
 import { deptSelector } from "../../Selectors/departmentSelector";
 import {
   AccountTypes,
@@ -27,6 +25,7 @@ import { clientSelector } from "../../Selectors/clientSelector";
 type IProps = {
   handleCloseDialog: () => void;
   loading: (progress: number, value: boolean) => void;
+  deptFilter: any;
 };
 
 type FieldType = {
@@ -54,6 +53,7 @@ type FieldType = {
 export default function AddProject({
   handleCloseDialog,
   loading,
+  deptFilter,
 }: IProps): JSX.Element {
   // Components Required Selectors and States
   const [form] = Form.useForm();
@@ -61,6 +61,7 @@ export default function AddProject({
   const marketplace = useSelector(marketPlaceAccountSelector);
   const deptData = useSelector(deptSelector);
   const clientData = useSelector(clientSelector);
+ 
 
   // Required UseStates
 
@@ -72,53 +73,54 @@ export default function AddProject({
     return { label: item.clientName, value: item.clientId };
   });
 
-  const deptOptions = deptData.map((item: any) => { 
-    return {label: item.departmentName, value: item.departmentId}
-  })
+  const deptOptions = deptData.map((item: any) => {
+    return { label: item.departmentName, value: item.departmentId };
+  });
 
-  const billingTypeOptions = Object.values(BillingTypes).map((item: any) => { 
-    return {label: item.name, value: item.value}
-  })
+  const billingTypeOptions = Object.values(BillingTypes).map((item: any) => {
+    return { label: item.name, value: item.value };
+  });
 
-  const contractTypeOptions = Object.values(ContractType).map((item: any) => { 
-    return {label: item.name, value: item.value}
-  })
+  const contractTypeOptions = Object.values(ContractType).map((item: any) => {
+    return { label: item.name, value: item.value };
+  });
 
-  const hiredIdOptions = marketplace.map((item: any) => { 
-    return {label: item.name, value: item.id}
-  })
+  const hiredIdOptions = marketplace.map((item: any) => {
+    return { label: item.name, value: item.id };
+  });
 
-  const billingStatusoptions = Object.values(ContractStatus).map((item: any) => { 
-    return {label: item.name, value: item.value}
-  })
+  const billingStatusoptions = Object.values(ContractStatus).map(
+    (item: any) => {
+      return { label: item.name, value: item.value };
+    }
+  );
 
-  const accountTypeOptions = Object.values(AccountTypes).map((item: any) => { 
-    return {label: item.name, value: item.value}
-  })
+  const accountTypeOptions = Object.values(AccountTypes).map((item: any) => {
+    return { label: item.name, value: item.value };
+  });
 
   // Other Code
   const onFinish = async (values: FieldType) => {
-    message.loading("Creating new Project")
-    loading(10, false)
+    message.loading("Creating new Project");
+    loading(10, false);
     const weekHours = values.hoursPerWeek.replace(":", ".");
-    
+
     projectService
       .addNewProject({
         ...values,
-        hoursPerWeek: weekHours
+        hoursPerWeek: weekHours,
       })
       .then((response) => {
         if (response.data.success) {
           message.success("Project Created Successfully");
           form.resetFields();
-            loading(100, false);
+          loading(100, false);
         } else {
           message.error("Something Went Wrong");
-            loading(100, false);
+          loading(100, false);
         }
         handleCloseDialog();
-        form.resetFields();
-        dispatch<any>(projectService.fetchProjectList());
+        dispatch<any>(projectService.fetchProjectList(deptFilter));
       })
       .catch((error) => {
         message.error("Failed to create Bid");
@@ -132,12 +134,12 @@ export default function AddProject({
 
   const handleHoursInputChange = (e: any) => {
     const inputValue = e.target.value;
-    if (inputValue.length === 3 && inputValue[2] === ':') { 
-      const forValue = inputValue[0]
-      form.setFieldValue("hoursPerWeek", forValue)
-    } else if (inputValue.length === 2) { 
-      const formattedValue = inputValue.replace(/(\d{2})(\d{0,2})/, '$1:$2');
-      form.setFieldValue("hoursPerWeek", formattedValue)
+    if (inputValue.length === 3 && inputValue[2] === ":") {
+      const forValue = inputValue[0];
+      form.setFieldValue("hoursPerWeek", forValue);
+    } else if (inputValue.length === 2) {
+      const formattedValue = inputValue.replace(/(\d{2})(\d{0,2})/, "$1:$2");
+      form.setFieldValue("hoursPerWeek", formattedValue);
     }
   };
 
@@ -166,7 +168,7 @@ export default function AddProject({
                 rules={[
                   { required: true, message: "Please Enter Contract Name" },
                   {
-                    pattern: new RegExp("^[A-Za-z]{1,29}$"),
+                    pattern: new RegExp("^[A-Z a-z]{1,29}$"),
                     message: "Please Enter Proper Name in String Format",
                   },
                 ]}
@@ -189,7 +191,9 @@ export default function AddProject({
                   options={clientOptions}
                   optionFilterProp="children"
                   filterOption={(input: any, option: any) =>
-                    (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+                    (option?.label ?? "")
+                      .toLowerCase()
+                      .includes(input.toLowerCase())
                   }
                 />
               </Form.Item>
@@ -199,15 +203,33 @@ export default function AddProject({
           <Row gutter={[24, 24]} style={{ justifyContent: "space-between" }}>
             <Col span={12}>
               <Form.Item
-                rules={[{ required: true, message: "Please Enter Week Hours" }, {pattern: new RegExp("^[0-9][0-9][:][0-9][0-9]"), message: "Please Type Proper Values in Hours and Minutes(HH:MM)"}]}
+                rules={[
+                  { required: true, message: "Please Enter Week Hours" },
+                  {
+                    pattern: new RegExp("^[0-9][0-9][:][0-9][0-9]"),
+                    message:
+                      "Please Type Proper Values in Hours and Minutes(HH:MM)",
+                  },
+                ]}
                 label="Hours Per Week"
                 name="hoursPerWeek"
               >
-                <Input placeholder="HH:MM" type="text" maxLength={5} onChange={handleHoursInputChange}/>
+                <Input
+                  placeholder="HH:MM"
+                  type="text"
+                  maxLength={5}
+                  onChange={handleHoursInputChange}
+                />
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item rules={[{required: true, message: "Please Select Department"}]} label="Department" name="departmentId">
+              <Form.Item
+                rules={[
+                  { required: true, message: "Please Select Department" },
+                ]}
+                label="Department"
+                name="departmentId"
+              >
                 <Select
                   showSearch
                   maxTagCount="responsive"
@@ -217,7 +239,9 @@ export default function AddProject({
                   options={deptOptions}
                   optionFilterProp="children"
                   filterOption={(input: any, option: any) =>
-                    (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+                    (option?.label ?? "")
+                      .toLowerCase()
+                      .includes(input.toLowerCase())
                   }
                 />
               </Form.Item>
@@ -226,7 +250,13 @@ export default function AddProject({
 
           <Row gutter={[24, 24]} style={{ justifyContent: "space-between" }}>
             <Col span={12}>
-              <Form.Item rules={[{required: true, message: "Please Select Billing Type"}]} label="Billing Type" name="billingType">
+              <Form.Item
+                rules={[
+                  { required: true, message: "Please Select Billing Type" },
+                ]}
+                label="Billing Type"
+                name="billingType"
+              >
                 <Select
                   className="custom-select"
                   placeholder="Select a BillingType"
@@ -235,7 +265,13 @@ export default function AddProject({
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item rules={[{required: true, message: "Please Select Contract Type"}]} label="Contract Type" name="contractType">
+              <Form.Item
+                rules={[
+                  { required: true, message: "Please Select Contract Type" },
+                ]}
+                label="Contract Type"
+                name="contractType"
+              >
                 <Select
                   className="custom-select"
                   placeholder="Select a ContractType"
@@ -247,15 +283,18 @@ export default function AddProject({
 
           <Row gutter={[24, 24]} style={{ justifyContent: "space-between" }}>
             <Col span={12}>
-              <Form.Item
-                label="Project Url"
-                name="projectUrl"
-              >
+              <Form.Item label="Project Url" name="projectUrl">
                 <Input placeholder="Enter the project URL" />
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item rules={[{required: true, message: "Please Select Start Date"}]} label="Start Date" name="startDate">
+              <Form.Item
+                rules={[
+                  { required: true, message: "Please Select Start Date" },
+                ]}
+                label="Start Date"
+                name="startDate"
+              >
                 <DatePicker
                   className="custom-select"
                   style={{ width: "100%" }}
@@ -266,7 +305,13 @@ export default function AddProject({
 
           <Row gutter={[24, 24]} style={{ justifyContent: "space-between" }}>
             <Col span={12}>
-            <Form.Item rules={[{required: true, message: "Please Select a Hired ID"}]} label="Hired Id" name="upworkId">
+              <Form.Item
+                rules={[
+                  { required: true, message: "Please Select a Hired ID" },
+                ]}
+                label="Hired Id"
+                name="upworkId"
+              >
                 <Select
                   showSearch
                   className="custom-select"
@@ -274,7 +319,9 @@ export default function AddProject({
                   options={hiredIdOptions}
                   optionFilterProp="children"
                   filterOption={(input: any, option: any) =>
-                    (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+                    (option?.label ?? "")
+                      .toLowerCase()
+                      .includes(input.toLowerCase())
                   }
                 />
               </Form.Item>
@@ -291,7 +338,9 @@ export default function AddProject({
               <Form.Item
                 label="Project Status"
                 name="billingStatus"
-                rules={[{required: true, message: "Please Select Project Status "}]}
+                rules={[
+                  { required: true, message: "Please Select Project Status " },
+                ]}
               >
                 <Select
                   className="custom-select"
@@ -301,7 +350,13 @@ export default function AddProject({
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item rules={[{required: true, message: "Please Select Account type"}]} label="Account Types" name="accounts">
+              <Form.Item
+                rules={[
+                  { required: true, message: "Please Select Account type" },
+                ]}
+                label="Account Types"
+                name="accounts"
+              >
                 <Select
                   className="custom-select"
                   placeholder="Select a AccountTypes"

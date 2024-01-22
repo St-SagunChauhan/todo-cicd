@@ -67,6 +67,7 @@ interface DataType {
   country: String;
   contractType: String;
   selectedDeptName: String;
+  employeeId: string;
 }
 
 interface Props {
@@ -114,7 +115,7 @@ const ProjectList = (props: Props) => {
           <LikeOutlined style={{ fontSize: "20px", color: " green" }} /> Good
         </>
       ),
-      value: "1",
+      value: 1,
     },
     {
       label: (
@@ -122,7 +123,7 @@ const ProjectList = (props: Props) => {
           <WarningOutlined style={{ fontSize: "20px", color: "yellow" }} /> Avg
         </>
       ),
-      value: "2",
+      value: 2,
     },
     {
       label: (
@@ -133,7 +134,7 @@ const ProjectList = (props: Props) => {
           Danger
         </>
       ),
-      value: "3",
+      value: 3,
     },
   ];
 
@@ -141,23 +142,22 @@ const ProjectList = (props: Props) => {
   // Department get by Filter
 
   useEffect(() => {
-    if (location) {
-      const pathnames = pageLocation(location.pathname);
-      setPathName(pathnames?.pathName);
-      setDeptFilter(pathnames?.deptFilter);
-    }
+    // if (location) {
+    const pathnames = pageLocation(location.pathname);
+    setPathName(pathnames?.pathName);
+    setDeptFilter(pathnames?.deptFilter);
+    // }
   }, [location]);
 
   // Initial values for
 
   useEffect(() => {
     if (!deptData) {
-      console.log({ pathName });
-
       if (
         userInfo?.role === RoleEnum.BDM.name ||
         userInfo?.role === RoleEnum.BD.name ||
-        userInfo?.role === RoleEnum.Admin.name
+        userInfo?.role === RoleEnum.Admin.name || 
+        userInfo?.role === RoleEnum.TeamLead.name
       ) {
         dispatch<any>(deptService.fetchDepartmentList());
       }
@@ -165,62 +165,34 @@ const ProjectList = (props: Props) => {
   }, [dispatch, deptData]);
 
   useEffect(() => {
-    if (!deptFilter) return;
-    dispatch<any>(projectService.fetchProjectList(deptFilter));
+    if (deptFilter) {
+      dispatch<any>(projectService.fetchProjectList(deptFilter));
+    }
   }, [dispatch, deptFilter]);
+
+  useEffect(() => {
+    if (userInfo.role === RoleEnum.Employee.name && !projectData) {
+      dispatch<any>(projectService.fetchProjectList());
+    }
+  }, [dispatch, projectData]);
 
   useEffect(() => {
     if (!marketPlaceAccounts) {
       dispatch<any>(marketplace.fetchMarketPlaceAccountList());
     }
-  }, [dispatch, marketPlaceAccounts]);
+  }, [marketPlaceAccounts]);
 
   useEffect(() => {
     if (!empData) {
       dispatch<any>(employeeService.fetchEmpList());
     }
-  }, [dispatch, empData]);
+  }, [empData]);
 
   useEffect(() => {
     if (!clientData) {
       dispatch<any>(clientService.fetchClientList());
     }
-  }, [dispatch, clientData]);
-
-  useEffect(() => {
-    if (
-      projectData !== null &&
-      marketPlaceAccounts !== null &&
-      empData !== null &&
-      clientData !== null
-    ) {
-      loading(100, false);
-      const rows = projectData.map((project: any, index: number) => ({
-        key: index,
-        id: project.id,
-        contractName: project.contractName,
-        upworkId: project.upworkId,
-        projectUrl: project.projectUrl,
-        clientId: project.clientId,
-        country: project.country,
-        contractType: project.contractType,
-        hoursPerWeek: project.hoursPerWeek,
-        departmentId: project.departmentId,
-        employeeId: project.employeeId,
-        employees: project.employees,
-        upworkName: project.upworkName ?? project.hiredProfile,
-        hiredId: project.hiredId,
-        hiredProfile: project.hiredProfile,
-        communicationId: project.communicationId,
-        communicationName: project.communicationName,
-        communicationMode: project.communicationMode,
-        billingStatus: project.billingStatus,
-        startDate: project.startDate,
-        projectHealthRate: project.projectHealthRate,
-      }));
-      setRowData(rows);
-    }
-  }, [dispatch, projectData, clientData, empData, marketPlaceAccounts]);
+  }, [clientData]);
 
   useEffect(() => {
     if (!empData) return;
@@ -250,24 +222,41 @@ const ProjectList = (props: Props) => {
     setProjectStatus(ContractStatusEnum);
   }, []);
 
-  // Other Workings
-
-  function renderCommaSeparatedCell(params: any) {
-    // Assuming the 'values' field is an array
-    if (Array.isArray(params)) {
-      return (
-        <span>
-          <Tooltip placement="topLeft" title={params.join(", ")}>
-            <span>
-              {params.join(", ").substring(0, 15)}
-              {params.join() !== "" ? "..." : null}
-            </span>
-          </Tooltip>
-        </span>
-      );
+  useEffect(() => {
+    if (
+      projectData !== null &&
+      marketPlaceAccounts !== null &&
+      empData !== null &&
+      clientData !== null
+    ) {
+      loading(100, false);
+      const rows = projectData.map((project: any, index: number) => ({
+        key: index,
+        id: project.id,
+        contractName: project.contractName,
+        upworkId: project.upworkId,
+        projectUrl: project.projectUrl,
+        clientId: project.clientId,
+        country: project.country,
+        contractType: project.contractType,
+        hoursPerWeek: project.hoursPerWeek,
+        departmentId: project.departmentId,
+        employeeId: project.employeeId,
+        upworkName: project.upworkName ?? project.hiredProfile,
+        hiredId: project.hiredId,
+        hiredProfile: project.hiredProfile,
+        communicationId: project.communicationId,
+        communicationName: project.communicationName,
+        communicationMode: project.communicationMode,
+        billingStatus: project.billingStatus,
+        startDate: project.startDate,
+        projectHealthRate: project.projectHealthRate,
+      }));
+      setRowData(rows);
     }
-    return null;
-  }
+  }, [dispatch, projectData, clientData, empData, marketPlaceAccounts]);
+
+  // Other Workings
 
   const onClickEditProject = async (projectId: any) => {
     loading(10, false);
@@ -278,16 +267,9 @@ const ProjectList = (props: Props) => {
       message.error("Something Went Wrong");
       loading(100, false);
     } else {
-      const projectContractType =
-        Object.values(ContractType).find(
-          (rate: any) =>
-            rate.value.toString() === response?.project.contractType
-        )?.name || null;
-
       setIsOpenEditModal(true);
       setEditRow({
         ...response?.project,
-        contractType: projectContractType,
       });
       message.success("Done!");
       loading(100, false);
@@ -332,72 +314,74 @@ const ProjectList = (props: Props) => {
 
   const columns = [
     {
-      title: "Health Rate",
+      title: userInfo?.role !== RoleEnum.Employee.name ? "Health Rate" : null,
       dataIndex: "projectHealthRate",
       key: "projectHealthRate",
       width: 10,
       render: (e: any, param: any) => {
-        if (param.projectHealthRate == "1") {
-          return (
-            <Card
-              style={{
-                backgroundColor: "#35ad58",
-                width: "50px",
-                height: "50px",
-                textAlign: "center",
-                color: "#ffffff",
-                fontWeight: "bold",
-                paddingTop: "15px",
-                borderRadius: "50px",
-              }}
-            >
-              <LikeOutlined
-                style={{ fontSize: "26px", transform: "translate(0px, -5px)" }}
-              />
-            </Card>
-          );
-        }
-        if (param.projectHealthRate == "2") {
-          return (
-            <Card
-              style={{
-                backgroundColor: "#e0d312",
-                width: "50px",
-                height: "50px",
-                textAlign: "center",
-                color: "#ffffff",
-                fontWeight: "bold",
-                paddingTop: "15px",
-                borderRadius: "50px",
-              }}
-            >
-              <WarningOutlined
-                style={{ fontSize: "26px", transform: "translate(0px, -5px)" }}
-              />
-            </Card>
-          );
-        }
-        if (param.projectHealthRate == "3") {
-          return (
-            <Card
-              style={{
-                backgroundColor: "#ec0e0e",
-                width: "50px",
-                height: "50px",
-                textAlign: "center",
-                color: "#ffffff",
-                fontWeight: "bold",
-                borderRadius: "50px",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <ExclamationCircleOutlined
-                style={{ fontSize: "30px", transform: "translate(0px, 0px)" }}
-              />
-            </Card>
-          );
+        if (userInfo?.role !== RoleEnum.Employee.name) {
+          if (param.projectHealthRate == 1) {
+            return (
+              <Card
+                style={{
+                  backgroundColor: "#35ad58",
+                  width: "50px",
+                  height: "50px",
+                  textAlign: "center",
+                  color: "#ffffff",
+                  fontWeight: "bold",
+                  paddingTop: "15px",
+                  borderRadius: "50px",
+                }}
+              >
+                <LikeOutlined
+                  style={{ fontSize: "26px", transform: "translate(0px, -5px)" }}
+                />
+              </Card>
+            );
+          }
+          if (param.projectHealthRate == 2) {
+            return (
+              <Card
+                style={{
+                  backgroundColor: "#e0d312",
+                  width: "50px",
+                  height: "50px",
+                  textAlign: "center",
+                  color: "#ffffff",
+                  fontWeight: "bold",
+                  paddingTop: "15px",
+                  borderRadius: "50px",
+                }}
+              >
+                <WarningOutlined
+                  style={{ fontSize: "26px", transform: "translate(0px, -5px)" }}
+                />
+              </Card>
+            );
+          }
+          if (param.projectHealthRate == 3) {
+            return (
+              <Card
+                style={{
+                  backgroundColor: "#ec0e0e",
+                  width: "50px",
+                  height: "50px",
+                  textAlign: "center",
+                  color: "#ffffff",
+                  fontWeight: "bold",
+                  borderRadius: "50px",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <ExclamationCircleOutlined
+                  style={{ fontSize: "30px", transform: "translate(0px, 0px)" }}
+                />
+              </Card>
+            );
+          }
         }
       },
     },
@@ -409,10 +393,16 @@ const ProjectList = (props: Props) => {
     },
     {
       title: "Assigned To",
-      dataIndex: "employees",
-      key: "employees",
+      dataIndex: "employeeId",
+      key: "employeeId",
       width: 50,
-      render: (e: any, param: any) => renderCommaSeparatedCell(param.employees),
+      render: (e: any, param: any) => {
+        const employeName = empData
+          .filter((item: any) => item.employeeId === param.employeeId)
+          .map((item: any) => `${item.firstName} ${item.lastName}`)
+          .join();
+        return employeName;
+      },
     },
     {
       title: "Upwork Hired Id",
@@ -445,7 +435,7 @@ const ProjectList = (props: Props) => {
             title={copiedRowIndex === rowIndex ? "Copied!" : projectUrl}
           >
             <span>
-              {projectUrl.substring(0, 40)}{" "}
+              {projectUrl?.substring(0, 40)}{" "}
               {copiedRowIndex === rowIndex && (
                 <CheckCircleTwoTone twoToneColor="#52c41a" />
               )}
@@ -591,7 +581,7 @@ const ProjectList = (props: Props) => {
       !filters.dept || row.departmentId.includes(filters.dept);
 
     const assignToCondition =
-      !filters.assignTo || row.employeeId.includes(filters.assignTo);
+      !filters.assignTo || row.employeeId === filters.assignTo;
 
     const healthCondition =
       !filters.health || row.projectHealthRate === filters.health;
@@ -635,13 +625,18 @@ const ProjectList = (props: Props) => {
       })
       .map((item: any) => item.label);
 
+    const employeName = empData
+      .filter((item: any) => item.employeeId === record.employeeId)
+      .map((item: any) => `${item.firstName} ${item.lastName}`)
+      .join();
+
     return (
       <Row style={{ padding: 20 }} gutter={[16, 16]}>
         <Col span={24}>
           <Row gutter={[16, 16]}>
             <Col span={16}>Department Name: {deptName.join(", ")}</Col>
             <Col span={8}>Communication Mode: {record.communicationMode}</Col>
-            <Col span={8}>Assigned To: {record.employees}</Col>
+            <Col span={8}>Assigned To: {employeName}</Col>
           </Row>
           <Divider />
           <Row gutter={[16, 16]}>
@@ -700,7 +695,7 @@ const ProjectList = (props: Props) => {
                           allowClear
                           options={assignToOption}
                           onChange={(_, value) =>
-                            filterTableData("assignTo", value)
+                            filterTableData("employeeId", value)
                           }
                         />
                       </Col>
@@ -786,6 +781,7 @@ const ProjectList = (props: Props) => {
           handleCloseDialog={handleCloseEditModal}
           isOpen={isOpenEditModal}
           row={editRow}
+          deptFilter={deptFilter}
         />
       </Modal>
       <Modal
@@ -811,7 +807,11 @@ const ProjectList = (props: Props) => {
         onCancel={handleCloseModal}
         footer={null}
       >
-        <AddProject {...props} handleCloseDialog={handleCloseModal} />
+        <AddProject
+          {...props}
+          deptFilter={deptFilter}
+          handleCloseDialog={handleCloseModal}
+        />
       </Modal>
     </>
   );

@@ -17,7 +17,6 @@ import TextArea from "antd/es/input/TextArea";
 import eodReportService from "../../services/eodReportRequest";
 import { FormInstance } from "antd/lib/form";
 import projectService from "../../services/projectRequest";
-import dayjs, { Dayjs } from "dayjs";
 import moment from "moment";
 
 type IProps = {
@@ -51,6 +50,7 @@ export default function AddEODREport({
   const [formattedBillingHours, setFormattedBillingHours] = useState<number>(0);
   const [formattedDelightHours, setFormattedDelightHours] = useState<number>(0);
   const [selectedProj, setSelectedProj] = useState<any>([]);
+  const [selectProjectId, setSelectProjectId] = useState<string>("");
 
   const [showDelightHr, setShowDelightHr] = useState({
     show: false,
@@ -188,8 +188,6 @@ export default function AddEODREport({
   // };
 
   const removeSelectedItem = (index: any) => {
-    console.log({ index });
-
     const tempArr = selectedProj;
     tempArr.pop(index);
     setSelectedProj(tempArr);
@@ -207,6 +205,28 @@ export default function AddEODREport({
     const nextWeekEndDate = today.clone().add(1, "weeks").endOf("week");
 
     return current < lastWeekEndDate || current > nextWeekStartDate;
+  };
+
+  const showRemainingHour = (id: any) => {
+    // Assuming eodData is an array of objects with 'projectHours' property as an array
+    const projectData = eodData.find((data: any) => data.projectHours);
+
+    if (projectData) {
+      const remainingHoursData = projectData.projectHours.find(
+        (project: any) => project.projectId === id
+      );
+
+      if (remainingHoursData) {
+        const remainingHR = remainingHoursData.remainingHours;
+        return remainingHR;
+      } else {
+        console.warn(`No data found for Project ${id}`);
+        // Handle the case where no data is found for the provided project ID
+      }
+    } else {
+      console.warn(`No project data found in eodData`);
+      // Handle the case where no project data is found in eodData
+    }
   };
 
   return (
@@ -250,7 +270,10 @@ export default function AddEODREport({
                       },
                     ]}
                   >
-                    <Select placeholder="Select Project Name">
+                    <Select
+                      placeholder="Select Project Name"
+                      onSelect={(projectId) => setSelectProjectId(projectId)}
+                    >
                       {projectData &&
                         projectData.length &&
                         projectData.map((project: any, key: number) => {
@@ -288,33 +311,22 @@ export default function AddEODREport({
                     rules={[
                       ({ getFieldValue }) => ({
                         validator(_, value) {
-                          const employeeDelightHours = getFieldValue([
-                            "projectHours",
-                            name,
-                            "employeeDelightHours",
-                          ]);
+                          const remainingHR =
+                            showRemainingHour(selectProjectId); // Get the remaining hours
 
-                          if (!value && !employeeDelightHours) {
+                          if (!value) {
                             return Promise.reject(
-                              "Please input Billing Hours or Delight Hours!"
+                              "Please input Billing Hours!"
+                            );
+                          }
+
+                          if (formattedBillingHours > remainingHR) {
+                            return Promise.reject(
+                              `Billing Hours cannot exceed the remaining hours: ${remainingHR}`
                             );
                           }
 
                           return Promise.resolve();
-                        },
-                      }),
-                      () => ({
-                        validator(_) {
-                          if (
-                            showDelightHr.textError &&
-                            showDelightHr.key === index
-                          ) {
-                            return Promise.reject(
-                              `Remaining Billing Hours: ${showDelightHr.remainingHR}`
-                            );
-                          } else {
-                            return Promise.resolve();
-                          }
                         },
                       }),
                     ]}
@@ -356,7 +368,6 @@ export default function AddEODREport({
                               "Please input Billing Hours or Delight Hours!"
                             );
                           }
-
                           return Promise.resolve();
                         },
                       }),

@@ -64,6 +64,7 @@ type FieldType = {
   startDate: string;
   billingType: string;
   billingStatus: string;
+  communicationMode: string;
 };
 type SizeType = Parameters<typeof Form>[0]["size"];
 
@@ -343,7 +344,7 @@ export default function AddBid({
                     <Col span={7}>
                       <Form.Item
                         label="Communication Mode"
-                        name="communicationmode"
+                        name="communicationMode"
                         rules={[
                           {
                             required: false,

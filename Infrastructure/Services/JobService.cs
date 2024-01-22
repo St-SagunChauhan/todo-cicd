@@ -129,6 +129,8 @@ namespace ST.ERP.Infrastructure.Services
                     {
                         CreatedBy = job.CreatedBy,
                         CreatedDate = job.CreatedDate,
+                        LastModified = DateTime.Now,
+                        LastModifiedBy = _claimsUtility.GetEmployeeIdFromClaims(),
                     });
 
                     await _context.SaveChangesAsync();

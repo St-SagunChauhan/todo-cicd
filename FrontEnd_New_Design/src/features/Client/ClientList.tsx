@@ -9,6 +9,7 @@ import { EditOutlined, CheckCircleTwoTone } from "@ant-design/icons";
 import EditClient from "./EditClient";
 import { AccountTypes } from "../../Enums/LeadsConnect/BillingStatus";
 import { countries } from "../../Helper/countries";
+import moment from "moment";
 interface DataType {
   key: string;
   clientName: string;
@@ -150,10 +151,7 @@ const ClientList = (props: Props) => {
       title: "Last Follow Up Date",
       dataIndex: "lastFollowUpDate",
       key: "lastFollowUpDate",
-      render: (e: any, param: any) => {
-        const date = param?.lastFollowUpDate.split("T");
-        return date[0];
-      },
+      render: (date: moment.MomentInput) => moment(date).format("DD MMMM YYYY"),
     },
     {
       title: "Actions",

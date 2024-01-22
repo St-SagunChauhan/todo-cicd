@@ -78,7 +78,7 @@ namespace ST.ERP.Infrastructure.Services
                 if (IsTeamLeadOrAdmin())
                 {
                     await UpdateEmployeeProjects(request);
-                    if(request.DepartmentIds != null)
+                    if(request.DepartmentId != null)
                         await UpdateProjectDepartments(request);
                 }
 
@@ -133,6 +133,7 @@ namespace ST.ERP.Infrastructure.Services
             try
             {
                 var project = await _context.Projects.AsNoTracking()
+                    .Include(p=>p.ProjectDepartments)
                     .Include(c => c.Client)
                     .Include(x => x.EmployeeProjects.Where(x => x.IsActive))
                     .ThenInclude(x => x.Employee)
@@ -144,10 +145,9 @@ namespace ST.ERP.Infrastructure.Services
                     var projectData = _mapper.Map<ProjectResponseData>(project);
                     if (projectData.ProjectHealthRate != null)
                     {
-                        var projectHealthRate = await _context.ProjectHealthRate
-                            .FirstOrDefaultAsync(x => x.Id == projectData.ProjectHealthRate);
+                        projectData.ProjectHealthRate = _context.ProjectHealthRate
+                                                        .FirstOrDefault(x => x.Id == projectData.ProjectHealthRate)?.Id;
 
-                        projectData.ProjectHealthRate = projectHealthRate?.Id;
                     }
                     return new ProjectResponse { Success = true, Project = projectData, Message = "Projects found successfully" };
                 }
@@ -190,7 +190,7 @@ namespace ST.ERP.Infrastructure.Services
                 .ToList();
 
                 foreach (var item in allProjects)
-                {
+                { 
                     MapUpworkInfo(item);
                     MapClientInfo(item);
                 }
@@ -881,7 +881,7 @@ namespace ST.ERP.Infrastructure.Services
                 item.ClientName = mappedClientInfoById.ClientName ?? string.Empty; ;
               
                 item.Country = mappedClientInfoById.Country ?? string.Empty;
-                item.BillingStatus = mappedProjectInfoById.BillingStatus != null ? Convert.ToString(mappedProjectInfoById.BillingStatus) : string.Empty;
+                item.BillingStatus = mappedProjectInfoById.BillingStatus ;
                 if (department != null && department.Any())
                 {
                     item.DepartmentId = department.Select(d => d.DepartmentId).ToArray();
@@ -932,7 +932,7 @@ namespace ST.ERP.Infrastructure.Services
 
             existingRecords.ForEach(p =>
             {
-                if (p.EmployeeId.HasValue && p.EmployeeId == request.EmployeeIds)
+                if (p.EmployeeId.HasValue && p.EmployeeId == request.EmployeeId)
                 {
                     p.IsActive = true;
                 }
@@ -946,21 +946,23 @@ namespace ST.ERP.Infrastructure.Services
             // Add new records if they do not already exist
             var existingEmployeeIds = existingRecords.Select(e => e.EmployeeId).ToList();
 
-            var newEmployeeIds = new List<Guid?> { request.EmployeeIds }; // Assuming request.EmployeeIds is a Guid?
+            var newRecord = new EmployeeProject
+            {
+                EmployeeId = request.EmployeeId,
+                ProjectId = request.ProjectId,
+                IsActive = request.IsActive,
+            };
 
-            var newRecords = newEmployeeIds
-                .Where(newEmployeeId => !existingEmployeeIds.Contains(newEmployeeId))
-                .Select(newEmployeeId => new EmployeeProject
-                {
-                    EmployeeId = newEmployeeId.Value,
-                    ProjectId = request.ProjectId,
-                    IsActive = request.IsActive,
-                })
-                .Where(newRecord => !_context.EmployeeProjects
-                    .Any(existingRecord => existingRecord.EmployeeId == newRecord.EmployeeId &&
-                                           existingRecord.ProjectId == newRecord.ProjectId))
-                .Select(_mapper.Map<EmployeeProject>);
-            await _context.EmployeeProjects.AddRangeAsync(newRecords);
+            if (!existingEmployeeIds.Contains(request.EmployeeId) &&
+                !_context.EmployeeProjects.Any(existingRecord =>
+                    existingRecord.EmployeeId == newRecord.EmployeeId &&
+                    existingRecord.ProjectId == newRecord.ProjectId))
+            {
+                var mappedRecord = _mapper.Map<EmployeeProject>(newRecord);
+            }
+            await _context.EmployeeProjects.AddAsync(newRecord);
+            await _context.SaveChangesAsync();
+
         }
 
         private async Task UpdateProjectDepartments(EditProjectRequest request)
@@ -971,7 +973,7 @@ namespace ST.ERP.Infrastructure.Services
 
             existingDepartmentRecords.ForEach(p =>
             {
-                if (p.DepartmentId.HasValue && request.DepartmentIds?.Contains(p.DepartmentId.Value) == true)
+                if (p.DepartmentId.HasValue && request.DepartmentId?.Contains(p.DepartmentId.Value) == true)
                 {
                     p.IsActive = true;
                 }
@@ -985,7 +987,7 @@ namespace ST.ERP.Infrastructure.Services
 
             var existingDeparmentIds = existingDepartmentRecords.Select(e => e.DepartmentId).ToList();
 
-            var newDepartmentIds = request.DepartmentIds?
+            var newDepartmentIds = request.DepartmentId?
                 .Cast<Guid?>()
                 .Except(existingDeparmentIds)
                 .ToList();

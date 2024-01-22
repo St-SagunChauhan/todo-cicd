@@ -28,7 +28,7 @@
         public bool IsActive { get; set; } = false;
         public string? BillingType { get; set; }
         public string? BillingStatus { get; set; }
-
+        public string? CommunicationMode {  get; set; }
     }
     public class BidReportResponse
     {

@@ -17,7 +17,6 @@ import {
   isLoadingSelector,
 } from "../../Selectors/userSelector";
 import { UserOutlined } from "@ant-design/icons";
-import { userSelector } from "../../Selectors/authSelector";
 import TabPane from "antd/es/tabs/TabPane";
 import authService from "../../services/authServices";
 

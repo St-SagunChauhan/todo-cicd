@@ -3,11 +3,15 @@
     public class ProjectResponseData
     {
         public Guid Id { get; set; }
-        public Guid? ClientId { get; set; }
-        public string? ClientName { get; set; }
-        public string? ContractName { get; set; }
-        public string? ContractType { get; set; }
-        public string? HoursPerWeek { get; set; }
+        public Guid ClientId { get; set; }
+        public int Accounts { get; set; }
+        public string ContractName { get; set; }
+        public int? ContractType { get; set; }
+        public string HoursPerWeek { get; set; }
+        public int BillingType { get; set; }
+        // projectstatus
+        public int? Status { get; set; }
+        public string ClientName { get; set; }
         public DateTime? StartDate { get; set; }
         public string? ProjectUrl { get; set; }
         public Guid[]? DepartmentId { get; set; }
@@ -16,7 +20,8 @@
         public string? UpworkName { get; set; }
         public string? Country { get; set; }
         public string? CommunicationMode { get; set; }
-        public string? BillingStatus { get; set; }
+        //ContractStatus
+        public int? BillingStatus { get; set; }
         public string? Reason { get; set; }
         public int? ProjectHealthRate { get; set; }
         public string? Issue { get; set; }

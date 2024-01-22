@@ -73,6 +73,7 @@ export default function EditBid({
     startDate: bidData.startDate,
     billingType: bidData.billingType,
     billingStatus: bidData.billingStatus,
+    communicationMode: bidData.communicationMode,
   });
   const [form] = Form.useForm();
 
@@ -465,8 +466,8 @@ export default function EditBid({
                         <Form.Item
                           className="input-selected-field"
                           label="Communication Mode"
-                          name="communicationmode"
-                          initialValue={bidData.mobile}
+                          name="communicationMode"
+                          initialValue={bidData.communicationMode}
                           rules={[
                             {
                               required: false,
@@ -478,7 +479,7 @@ export default function EditBid({
                             type="tel"
                             onChange={(e) =>
                               handleInputChange(
-                                "communicationmode",
+                                "communicationMode",
                                 e.target.value
                               )
                             }

@@ -1504,7 +1504,7 @@ namespace ST.ERP.Infrastructure.Services
             {
                 if (request.ContractStatus is not null)
                 {
-                    projectDepartment = projectDepartment.Where(c => c.ContractStatus == request.ContractStatus).ToList();
+                    projectDepartment = projectDepartment.Where(c => c.ContractStatus == request.ContractStatus.ToString()).ToList();
                 }
 
                 if (request.DepartmentId.HasValue)

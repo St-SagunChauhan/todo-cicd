@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using ST.ERP.Helper;
 using ST.ERP.Helper.Context;
 using ST.ERP.Infrastructure.Interfaces;
 using ST.ERP.Models.DAO;
 using ST.ERP.Models.DTO;
-using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using static ST.ERP.Helper.Enums;
 
@@ -18,14 +19,17 @@ namespace ST.ERP.Infrastructure.Services
         private readonly STERPContext _context;
         private readonly ClaimsUtility _claimsUtility;
         private readonly IMapper _mapper;
+        private readonly LeavesSettings _leavesSettings;
+        Queue<Action> actionQueue = new Queue<Action>();
         #endregion
 
         #region Constructor
-        public EodService(STERPContext context, ClaimsUtility claimsUtility, IMapper mapper)
+        public EodService(STERPContext context, ClaimsUtility claimsUtility, IMapper mapper, IOptions<LeavesSettings> leavesSettings)
         {
             _context = context;
             _claimsUtility = claimsUtility;
             _mapper = mapper;
+            _leavesSettings = leavesSettings.Value;
         }
         #endregion
 
@@ -53,11 +57,18 @@ namespace ST.ERP.Infrastructure.Services
                         EmployeeId = request.EmployeeId,
                         IsActive = true,
                         EODDate = request.EODDate,
-                        Remarks = request.Remarks
+                        Remarks = request.Remarks,
+                        //IsEditable = true,
                     };
 
                     await _context.EODReport.AddAsync(eodReportData);
                     await _context.SaveChangesAsync();
+                    actionQueue.Enqueue(() => SendTeamsLeaveNotificationsAsync(request));
+                    while (actionQueue.Count > 0)
+                    {
+                        Action action = actionQueue.Dequeue();
+                        action.Invoke();
+                    }
                     return new EODReportResponse { Success = true, Message = "EOD Report Created Successfully!", EODReport = eodReportData };
                 }
                 else
@@ -93,7 +104,7 @@ namespace ST.ERP.Infrastructure.Services
                 DateTime currentDate = DateTime.Now;
                 DayOfWeek currentDay = currentDate.DayOfWeek;
 
-                int daysUntilMonday = (int) DayOfWeek.Monday - (int) currentDay;
+                int daysUntilMonday = (int)DayOfWeek.Monday - (int)currentDay;
                 if (daysUntilMonday is 0 or < 1)
                 {
                     daysUntilMonday -= 7; // If today is already Monday, subtract 7 days to get the last Monday
@@ -142,6 +153,28 @@ namespace ST.ERP.Infrastructure.Services
             }
         }
 
+        public async Task<BaseResponse> EODReportApprovedByTeamLead(Guid? TeamLeadId, Guid? EodReportId)
+        {
+            try
+            {
+                var employee = await _context.Employees.AsNoTracking().FirstOrDefaultAsync(x => x.EmployeeId == TeamLeadId);
+                var eod = await _context.EODReport.AsNoTracking().Include(x => x.Employee).FirstOrDefaultAsync(x => x.EodReportId == EodReportId);
+
+                if (employee.Role == Role.TeamLead.ToString() && eod is not null)
+                {
+                    return null;
+                }
+                else
+                {
+                    throw new AppException("Cannot approve eod.");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new AppException(ex.Message);
+            }
+        }
+
         #endregion
 
         #region Private Methods
@@ -149,12 +182,12 @@ namespace ST.ERP.Infrastructure.Services
         {
             var type = totalBilledHours.GetType();
 
-            var employeeId = (Guid) type.GetProperty(nameof(EODSubReport.EmployeeId)).GetValue(totalBilledHours, null);
-            var employeeName = (string) type.GetProperty(nameof(EODSubReport.EmployeeName)).GetValue(totalBilledHours, null);
+            var employeeId = (Guid)type.GetProperty(nameof(EODSubReport.EmployeeId)).GetValue(totalBilledHours, null);
+            var employeeName = (string)type.GetProperty(nameof(EODSubReport.EmployeeName)).GetValue(totalBilledHours, null);
 
             // Check if ProjectHours property is not null
             var projectDataProperty = type.GetProperty(nameof(EODSubReport.ProjectHours));
-            var projectData = (List<object>) (projectDataProperty?.GetValue(totalBilledHours, null) ?? new List<object>());
+            var projectData = (List<object>)(projectDataProperty?.GetValue(totalBilledHours, null) ?? new List<object>());
 
             var eodSubReport = new EODSubReport
             {
@@ -174,7 +207,7 @@ namespace ST.ERP.Infrastructure.Services
                         };
                     })
                     .ToArray(),
-                EODDate = (DateTime?) type.GetProperty(nameof(EODSubReport.EODDate)).GetValue(totalBilledHours, null), // Adjust this as needed
+                EODDate = (DateTime?)type.GetProperty(nameof(EODSubReport.EODDate)).GetValue(totalBilledHours, null), // Adjust this as needed
             };
 
             return eodSubReport;
@@ -276,7 +309,7 @@ namespace ST.ERP.Infrastructure.Services
             try
             {
                 List<ProjectHoursData> projectHoursList = new List<ProjectHoursData>();
-                var startDate = DateTime.Now.Date.AddDays(-(int) DateTime.Now.Date.DayOfWeek);
+                var startDate = DateTime.Now.Date.AddDays(-(int)DateTime.Now.Date.DayOfWeek);
                 var endDate = startDate.AddDays(6);
                 decimal billingHours = 0;
                 // Deserialize the JSON string into a Dictionary
@@ -332,10 +365,11 @@ namespace ST.ERP.Infrastructure.Services
                             // Use dynamic keys
                             BillingHours = GetHoursValue(kvp.Value, hourKeys, nameof(ProjectHoursData.BillingHours)),
                             EmployeeDelightHours = GetHoursValue(kvp.Value, hourKeys, nameof(ProjectHoursData.EmployeeDelightHours)),
+                            ProjectId = project.Id
                         };
                         foreach (var remainingHours in accumulatedRemainingHours.Values)
                         {
-                            if(remainingHours < 0)
+                            if (remainingHours < 0)
                             {
                                 throw new AppException("No remaining hours are left");
                             }
@@ -376,7 +410,7 @@ namespace ST.ERP.Infrastructure.Services
 
         private async Task<List<EODSubReport>> GetEODSubReportsForTeamLeadAsync(CustomFilterRequest request, Guid deptId)
         {
-            var startDate = request.StartDate ?? DateTime.Now.Date.AddDays(-(int) DateTime.Now.Date.DayOfWeek);
+            var startDate = request.StartDate ?? DateTime.Now.Date.AddDays(-(int)DateTime.Now.Date.DayOfWeek);
             var endDate = request.EndDate ?? startDate.AddDays(6);
 
             var dbEodReport = await _context.EODReport
@@ -393,7 +427,7 @@ namespace ST.ERP.Infrastructure.Services
         {
             try
             {
-                var startDate = request.StartDate ?? DateTime.Now.Date.AddDays(-(int) DateTime.Now.Date.DayOfWeek);
+                var startDate = request.StartDate ?? DateTime.Now.Date.AddDays(-(int)DateTime.Now.Date.DayOfWeek);
                 var endDate = request.EndDate ?? startDate.AddDays(6);
 
                 var dbEodReport = await _context.EODReport?
@@ -450,6 +484,58 @@ namespace ST.ERP.Infrastructure.Services
         {
             var selectedValue = selector(value);
             return decimal.TryParse(selectedValue, out var result) ? result : 0;
+        }
+
+        private async Task SendTeamsLeaveNotificationsAsync(CreateEODReportRequest request)
+        {
+            var eod = await _context.EODReport?.Include(x => x.Employee).ThenInclude(y => y.Department)
+                .Where(y => y.EmployeeId == request.EmployeeId).FirstOrDefaultAsync();
+            var jsonValue = new Dictionary<string, string>
+            {
+                { "text", $"<b>{eod.Employee.FirstName} {eod.Employee.LastName}</b> posted new message. Supreme Technologies/EOD Status."
+                },
+                {"title", "EOD Report" },
+                { "type", "MessageCard" },
+                { "ThemeColor", "0072C6" }
+            };
+            if (jsonValue.ContainsValue("Pending"))
+            {
+                // Hi
+            }
+
+            using HttpClient httpClients = new();
+            var response = new object();
+#if DEBUG
+            response = eod.Employee.Department.DepartmentName switch
+            {
+                "Dot Net Framework Technology Department" => await httpClients.SendAsync(HttpClientRequest(jsonValue, _leavesSettings.TeamsNotificationURL)),
+                "Business Development" => await httpClients.SendAsync(HttpClientRequest(jsonValue, _leavesSettings.TeamsNotificationURL)),
+                "Creative and Digital Marketing Department" => await httpClients.SendAsync(HttpClientRequest(jsonValue, _leavesSettings.TeamsNotificationURL)),
+                "Javascript Framework Technology Department" => await httpClients.SendAsync(HttpClientRequest(jsonValue, _leavesSettings.TeamsNotificationURL)),
+                "PHP Technology Department" => await httpClients.SendAsync(HttpClientRequest(jsonValue, _leavesSettings.TeamsNotificationURL)),
+                "Quality Analysis Department" => await httpClients.SendAsync(HttpClientRequest(jsonValue, _leavesSettings.TeamsNotificationURL)),
+                _ => "No department found"
+            };
+#else
+            response = eod.Employee.Department.DepartmentName switch
+            {
+                "Dot Net Framework Technology Department" => await httpClients.SendAsync(HttpClientRequest(jsonValue, _leavesSettings.DotNet)),
+                "Business Development" => await httpClients.SendAsync(HttpClientRequest(jsonValue, _leavesSettings.BD)),
+                "Creative and Digital Marketing Department" => await httpClients.SendAsync(HttpClientRequest(jsonValue, _leavesSettings.WebDesign)),
+                "Javascript Framework Technology Department" => await httpClients.SendAsync(HttpClientRequest(jsonValue, _leavesSettings.MERN)),
+                "PHP Technology Department" => await httpClients.SendAsync(HttpClientRequest(jsonValue, _leavesSettings.PHP)),
+                "Quality Analysis Department" => await httpClients.SendAsync(HttpClientRequest(jsonValue, _leavesSettings.QA)),
+                _ => "No department found"
+            };
+#endif
+        }
+
+        private HttpRequestMessage HttpClientRequest(Dictionary<string, string> jsonValue, string setting)
+        {
+            var request = new HttpRequestMessage(new HttpMethod("POST"), setting);
+            request.Content = new StringContent(JsonConvert.SerializeObject(jsonValue));
+            request.Content.Headers.ContentType = MediaTypeHeaderValue.Parse("application/json");
+            return request;
         }
 
         #endregion

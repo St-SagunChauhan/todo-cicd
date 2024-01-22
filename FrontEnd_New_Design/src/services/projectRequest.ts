@@ -3,6 +3,7 @@ import { Dispatch } from "redux";
 import { IProjectActionTypes } from "../models/IProjectState";
 import authService from "./authServices";
 import dayjs from "dayjs";
+import { RoleEnum } from "../features/Employee/EmployeeModel";
 
 const baseURL = process.env.REACT_APP_ENDPOINT_URL;
 
@@ -21,8 +22,8 @@ class ProjectService {
         type: IProjectActionTypes.PROJECT_REQUEST,
       });
 
-      const userInfo: any = JSON.parse(authService.getUser());
-      if (userInfo.role === "Employee") {
+      const userInfo: any = JSON.parse(authService.getUser());      
+      if (userInfo.role === RoleEnum.Employee.name) {        
         axios
           .get(
             `${baseURL}/Project/getProjectByEmployeeId/${userInfo.employeeId}`,

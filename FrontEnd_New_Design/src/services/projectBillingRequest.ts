@@ -11,9 +11,6 @@ class ProjectBillingService {
     fetchProjectBillingList =
         (endDate?: string | null, startDate?: string | null, dept?: string | null) => (dispatch: Dispatch<any>) => {
             // Get department list
-            dispatch(projectService.fetchProjectList());
-            dispatch(marketPlaceAccountService.fetchMarketPlaceAccountList());
-            dispatch(ProjectDepartmentService.fetchProjectBillingList());
 
             dispatch({
                 type: IProjectBillingActionTypes.ProjectBilling_REQUEST,

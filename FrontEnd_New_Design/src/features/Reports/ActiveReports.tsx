@@ -29,7 +29,7 @@ interface ProjectReports {
   departmentName: string;
   clientId: string;
   clientName: string;
-  projectHealthRate: string;
+  projectHealthRate: number;
   country: string;
   projectId: string;
   accounts: string;
@@ -157,7 +157,7 @@ export default function ActiveReports({ loading }: Props) {
       dataIndex: "projectHealthRate",
       key: "projectHealthRate",
       render: (e: any, param: any) => {
-        if (param.projectHealthRate === "1") {
+        if (param.projectHealthRate === 1) {
           return (
             <Card
               style={{
@@ -177,7 +177,7 @@ export default function ActiveReports({ loading }: Props) {
             </Card>
           );
         }
-        if (param.projectHealthRate === "2") {
+        if (param.projectHealthRate === 2) {
           return (
             <Card
               style={{
@@ -197,7 +197,7 @@ export default function ActiveReports({ loading }: Props) {
             </Card>
           );
         }
-        if (param.projectHealthRate === "3") {
+        if (param.projectHealthRate === 3) {
           return (
             <Card
               style={{

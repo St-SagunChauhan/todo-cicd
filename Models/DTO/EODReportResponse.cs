@@ -13,7 +13,7 @@ namespace ST.ERP.Models.DTO
         public List<EODSubReport> EODSubReport { get; set; } 
     }
 
-    public class EODSubReport
+    public class EODSubReport:BaseResponse
     {
         public Guid EodReportId { get; set; }
         public string? EmployeeName { get; set; }
@@ -28,5 +28,6 @@ namespace ST.ERP.Models.DTO
         public string? BillingHours {  get; set; }
         public string? EmployeeDelightHours { get; set; }
         public object RemainingHours {  get; set; }
+        public Guid? ProjectId {  get; set; }
     }
 }

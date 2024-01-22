@@ -77,8 +77,8 @@ namespace ST.ERP.Infrastructure.Services
         {
             try
             {
-                var impersonator = await _context.Employees.Include(x => x.Department).AsNoTracking().FirstOrDefaultAsync(x => x.EmployeeId == request.ImpersonatorId);
-                var impersonatedUser = await _context.Employees.Include(x => x.Department).AsNoTracking().FirstOrDefaultAsync(x => x.EmployeeId == request.ImpersonatedUserId);
+                var impersonator = await _context.Employees.AsNoTracking().FirstOrDefaultAsync(x => x.EmployeeId == request.ImpersonatorId);
+                var impersonatedUser = await _context.Employees.AsNoTracking().FirstOrDefaultAsync(x => x.EmployeeId == request.ImpersonatedUserId);
 
                 var token = GenerateJwtToken(impersonatedUser);
                 if (impersonator.IsInImpersonation is null or false)
@@ -100,9 +100,9 @@ namespace ST.ERP.Infrastructure.Services
         {
             try
             {
-                var loggedInUser = await _context.Employees.Include(x => x.Department).AsNoTracking().FirstOrDefaultAsync(x => x.EmployeeId == request.ImpersonatedUserId);
+                var loggedInUser = await _context.Employees.AsNoTracking().FirstOrDefaultAsync(x => x.EmployeeId == request.ImpersonatedUserId);
 
-                var impersonator = await _context.Employees.Include(x => x.Department).AsNoTracking().FirstOrDefaultAsync(x => x.EmployeeId == request.ImpersonatorId);
+                var impersonator = await _context.Employees.AsNoTracking().FirstOrDefaultAsync(x => x.EmployeeId == request.ImpersonatorId);
 
                 if (loggedInUser is not null && impersonator is not null)
                 {
