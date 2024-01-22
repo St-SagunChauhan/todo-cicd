@@ -40,10 +40,6 @@ jobs:
         env:
           CI: false
 
-  deploy:
-    needs: build
-
-    steps:
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
