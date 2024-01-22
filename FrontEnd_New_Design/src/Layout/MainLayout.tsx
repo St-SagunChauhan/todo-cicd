@@ -9,7 +9,6 @@ import { useNavigate } from "react-router-dom";
 import NavbarItems from "./NavbarItems";
 import authService from "../services/authServices";
 import empService from "../services/empRequest";
-import App from "../App";
 const { Header, Sider, Content } = Layout;
 
 type Props = {
@@ -62,8 +61,6 @@ const MainLayout: FC<Props> = (typeProps: Props) => {
     }
   };
 
-  const version = process.env.REACT_APP_VERSION || "1.0.0";
-
   return (
     <>
       <Layout
@@ -97,13 +94,12 @@ const MainLayout: FC<Props> = (typeProps: Props) => {
             />
           </div>
           <Divider className="devider" />
-          <div className="scrollAbleY" style={{ height: "100%" }}>
+          <div className="scrollAbleY" style={{ height: "100%"}}>
             <NavbarItems loading={loading} />
           </div>
           <Divider className="devider bottomDevider" />
           <div className="footer">
-            {/* <h1>Version 2.0</h1> */}
-            <h1>Version {version}</h1>
+            <h1>Version 2.0</h1>
           </div>
         </Sider>
         <Layout>
@@ -116,10 +112,9 @@ const MainLayout: FC<Props> = (typeProps: Props) => {
               borderRadius: "10px",
             }}
           >
-            <Row
-              gutter={{ xs: 3, sm: 6 }}
-              style={{ justifyContent: "space-between" }}
-            >
+         
+            <Row gutter={{ xs: 3, sm: 6 }}
+            style={{ justifyContent: "space-between" }}>
               <Col className="gutter-row" span={9}>
                 <Button
                   type="text"
@@ -139,7 +134,7 @@ const MainLayout: FC<Props> = (typeProps: Props) => {
                   }}
                 />
               </Col>
-              <Col span={13}>
+              <Col span={13} >
                 <div>
                   {/* Display "Stop Impersonation" button when impersonation is true */}
                   {isPersonating === "true" && (
