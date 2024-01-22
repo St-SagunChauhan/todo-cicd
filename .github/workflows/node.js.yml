@@ -26,6 +26,9 @@ jobs:
         with:
           node-version: "14"
 
+      - name: create directory
+        run: cd ${{ github.workspace }}FrontEnd_New_Design\
+
       - name: Install Dependencies
         run: npm install --f
 
