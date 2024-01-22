@@ -16,10 +16,20 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.ref }}
+
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: "14"
+
+      - name: Print Working Directory
+        run: |
+          ls -al
+          pwd
 
       - name: Install Dependencies
         run: npm install --f
