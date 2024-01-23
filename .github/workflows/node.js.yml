@@ -34,9 +34,6 @@ jobs:
           CI: false
         working-directory: FrontEnd_New_Design\build
 
-      - name: Create New Folder
-        run: cd FrontEnd_New_Design; mkdir build
-
       - name: Copy build artifacts to new folder
         run: cp -r build/* build/
 
