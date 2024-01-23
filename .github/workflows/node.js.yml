@@ -34,9 +34,6 @@ jobs:
           CI: false
         working-directory: FrontEnd_New_Design\build
 
-      - name: Debug npm run build
-        run: npm run build || echo "Build failed with error code $?"
-
   deploy:
     runs-on: windows-latest
 
