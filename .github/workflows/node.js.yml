@@ -9,7 +9,7 @@ on:
       - develop
 
 jobs:
-  build:
+  build and deploy:
     runs-on: windows-latest
 
     steps:
@@ -32,12 +32,9 @@ jobs:
 
       - name: Deploy to IIS
         run: |
-          host: ${{ secrets.IIS_HOST }}
-          username: ${{ secrets.IIS_USERNAME }}
-          password: ${{ secrets.IIS_PASSWORD }}
           $sourcePath = "build\*"
           $destinationPath = "C:/inetpub/crm-test"
-          Copy-Item -Path $sourcePath -Destination $destinationPath -Recurse
+          Copy-Item -Path $sourcePath -Destination $destinationPath -Recurse -Force
         shell: pwsh
 
       # - name: Deploy to IIS
