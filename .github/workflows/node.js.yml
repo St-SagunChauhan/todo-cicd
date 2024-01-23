@@ -25,6 +25,9 @@ jobs:
       - name: Install Dependencies
         run: cd FrontEnd_New_Design;  npm install --f;
 
+      - name: Create New Folder
+        run: cd FrontEnd_New_Design; mkdir build
+
       - name: Build React App
         run: npm run build --if-present;
         env:
@@ -32,7 +35,7 @@ jobs:
         working-directory: FrontEnd_New_Design\build
 
       - name: Create New Folder
-        run: mkdir build
+        run: cd FrontEnd_New_Design; mkdir build
 
       - name: Copy build artifacts to new folder
         run: cp -r build/* build/
