@@ -9,7 +9,7 @@ on:
       - develop
 
 jobs:
-  build and deploy:
+  build:
     runs-on: windows-latest
 
     steps:
@@ -30,6 +30,12 @@ jobs:
         env:
           CI: false
 
+  deploy:
+    runs-on: windows-latest
+
+    needs: build
+
+    steps:
       - name: Deploy to IIS
         run: |
           $sourcePath = "build\*"
