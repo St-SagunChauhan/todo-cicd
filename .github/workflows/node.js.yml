@@ -38,8 +38,7 @@ jobs:
     steps:
       - name: Deploy to IIS
         run: |
-          cd FrontEnd_New_Design;
-          $sourcePath = "build\*"
+          $sourcePath = "FrontEnd_New_Design/build/*"
           $destinationPath = "C:/inetpub/crm-test"
           Copy-Item -Path $sourcePath -Destination $destinationPath -Recurse -Force
         shell: pwsh
