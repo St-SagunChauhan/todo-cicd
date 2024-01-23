@@ -39,7 +39,8 @@ jobs:
           git config --global user.name $user_name
           git config --global user.email $user_email
           git remote set-url origin https://${github_token}@github.com/${repository}
-          cd FrontEnd_New_Design; npm run deploy || exit 1
+          cd FrontEnd_New_Design; npm run deploy
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
         env:
           user_name: "github-actions[bot]"
           user_email: "github-actions[bot]@users.noreply.github.com"
