@@ -34,9 +34,6 @@ jobs:
           CI: false
         working-directory: FrontEnd_New_Design\build
 
-      # - name: Copy build artifacts to new folder
-      #   run: cp -r FrontEnd_New_Design/build/* FrontEnd_New_Design/build/
-
       - name: Deploy
         run: |
           git config --global user.name $user_name
