@@ -37,4 +37,4 @@ jobs:
           username: ${{ secrets.IIS_USERNAME }}
           password: ${{ secrets.IIS_PASSWORD }}
           local: "build/*"
-          remote: "C:\inetpub\crm-test"
+          remote: "C:/inetpub/crm-test"
