@@ -35,7 +35,7 @@ jobs:
         working-directory: FrontEnd_New_Design\build
 
       - name: Copy build artifacts to new folder
-        run: cp -r build/* build/
+        run: cp -r FrontEnd_New_Design/build/* FrontEnd_New_Design/build/
 
   deploy:
     runs-on: windows-latest
