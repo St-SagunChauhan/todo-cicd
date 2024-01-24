@@ -34,16 +34,20 @@ jobs:
           CI: false
         working-directory: FrontEnd_New_Design\build
 
-      - name: Install SSH Key
+      - name: SSH into server and deploy
         uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          name: id_rsa
+          known_hosts: ${{ secrets.IIS_HOST }}
+          if_key_exists: fail
 
-      - name: Adding Known Hosts
-        run: ssh-keyscan -H ${{ secrets.IIS_HOST }} >> ~/.ssh/known_hosts
-
-      - name: Deploy with rsync
-        run: rsync -avz ./build/ ${{ secrets.IIS_USERNAME }}@${{ secrets.IIS_HOST }}:/inetpub/crm-test/
+      - name: Deploy to IIS
+        run: |
+          cd FrontEnd_New_Design; npm run deploy
+        env:
+          IIS_SERVER_USERNAME: ${{ secrets.IIS_USERNAME }}
+          IIS_SERVER_PASSWORD: ${{ secrets.IIS_PASSWORD }}
 
       # - name: Copy artifacts
       #   run: |
