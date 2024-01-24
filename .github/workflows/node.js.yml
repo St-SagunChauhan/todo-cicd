@@ -41,6 +41,7 @@ jobs:
           IIS_SERVER_HOST: ${{ secrets.IIS_HOST }}
           IIS_SERVER_USERNAME: ${{ secrets.IIS_USERNAME }}
           IIS_SERVER_PASSWORD: ${{ secrets.IIS_PASSWORD }}
+          working-directory: FrontEnd_New_Design\deploy.ps1
 
       # - name: Deploy
       #   run: |
