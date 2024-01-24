@@ -36,7 +36,8 @@ jobs:
 
       - name: Deploy to IIS
         run: |
-          deploy.bat
+          cd FrontEnd_New_Design; npm run deploy
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
         env:
           IIS_SERVER_HOST: ${{ secrets.IIS_HOST }}
           IIS_SERVER_USERNAME: ${{ secrets.IIS_USERNAME }}
