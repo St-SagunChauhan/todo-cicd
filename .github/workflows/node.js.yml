@@ -34,14 +34,23 @@ jobs:
           CI: false
         working-directory: FrontEnd_New_Design\build
 
-      - name: Deploy to IIS
+      - name: Copy artifacts
         run: |
-          Invoke-Expression -Command '.\deploy.ps1'
+          New-Item -ItemType Directory -Force -Path "C:/inetpub/crm-test"
+          Copy-Item -Path "${{ github.workspace }}/FrontEnd_New_Design/build/*" -Destination "C:/inetpub/crm-test" -Recurse
         env:
           IIS_SERVER_HOST: ${{ secrets.IIS_HOST }}
           IIS_SERVER_USERNAME: ${{ secrets.IIS_USERNAME }}
           IIS_SERVER_PASSWORD: ${{ secrets.IIS_PASSWORD }}
-          working-directory: FrontEnd_New_Design\deploy.ps1
+
+      # - name: Deploy to IIS
+      #   run: |
+      #     Invoke-Expression -Command '.\deploy.ps1'
+      #   env:
+      #     IIS_SERVER_HOST: ${{ secrets.IIS_HOST }}
+      #     IIS_SERVER_USERNAME: ${{ secrets.IIS_USERNAME }}
+      #     IIS_SERVER_PASSWORD: ${{ secrets.IIS_PASSWORD }}
+      #     working-directory: FrontEnd_New_Design\deploy.ps1
 
       # - name: Deploy
       #   run: |
