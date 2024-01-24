@@ -45,7 +45,7 @@ jobs:
       - name: Deploy to IIS
         run: |
           cd FrontEnd_New_Design; npm run deploy
-          scp -o StrictHostKeyChecking=no -r build/* user@{{ secrets.IIS_HOST }}:C:/inetpub/crm-test
+          scp -o StrictHostKeyChecking=no -r build/* user@${{ secrets.IIS_HOST }}:C:/inetpub/crm-test
         env:
           IIS_SERVER_USERNAME: ${{ secrets.IIS_USERNAME }}
           IIS_SERVER_PASSWORD: ${{ secrets.IIS_PASSWORD }}
