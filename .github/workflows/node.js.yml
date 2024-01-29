@@ -72,10 +72,10 @@ jobs:
         IIS_SERVER_USERNAME: ${{ secrets.IIS_USERNAME }}
         IIS_SERVER_PASSWORD: ${{ secrets.IIS_PASSWORD }}
 
-    # deploy:
-    #   runs-on: windows-latest
-    #   needs: build
-    #   steps:
+      # deploy:
+      #   runs-on: windows-latest
+      #   needs: build
+      #   steps:
 
       # - name: Copy artifacts
       #   run: |
