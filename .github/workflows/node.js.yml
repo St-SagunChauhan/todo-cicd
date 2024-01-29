@@ -33,7 +33,7 @@ jobs:
         env:
           CI: false
         working-directory: FrontEnd_New_Design\build
-        
+
       - name: SSH into server and deploy
         uses: shimataro/ssh-key-action@v2
         with:
