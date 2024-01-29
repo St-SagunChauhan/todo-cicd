@@ -56,6 +56,8 @@ jobs:
           $sourcePath = "FrontEnd_New_Design/build/*"
           $destinationPath = "C:/inetpub/crm-test"
 
+          Remove-Item -Path $destinationPath\* -Recurse -Force
+
           if (!(Test-Path -Path $destinationPath -PathType Container)) {
             New-Item -ItemType Directory -Force -Path $destinationPath
           }
