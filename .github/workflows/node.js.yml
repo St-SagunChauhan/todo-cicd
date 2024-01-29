@@ -58,7 +58,6 @@ jobs:
 
           if (!(Test-Path -Path $destinationPath -PathType Container)) {
             New-Item -ItemType Directory -Force -Path $destinationPath
-            cd crm-test
           }
 
           Copy-Item -Path $sourcePath -Destination $destinationPath -Recurse -Force
