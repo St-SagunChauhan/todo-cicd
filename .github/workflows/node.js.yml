@@ -61,10 +61,10 @@ jobs:
       - name: Deploy to IIS
         uses: webdeploy/webdeploy-action@v2
         with:
-          server: "http://crm.supremetechnologiesindia.com" # Replace with your server address
+          server: ${{ secrets.IIS_HOST }} # Replace with your server address
           username: ${{ secrets.IIS_USERNAME }}
           password: ${{ secrets.IIS_PASSWORD }}
-          site: "crmfrontend" # Replace with your IIS site name
+          # site: "crmfrontend" # Replace with your IIS site name
           action: "sync"
           deploy_path: 'C:\inetpub\crm-test' # Replace with your IIS site root path
           remove_files: true
