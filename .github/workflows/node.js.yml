@@ -52,6 +52,10 @@ jobs:
           cp -R ${{ github.workspace }}/FrontEnd_New_Design/build/*
 
       - name: Deploy to IIS
+        env:
+          IIS_SERVER_HOST: ${{ secrets.IIS_HOST }}
+          IIS_SERVER_USERNAME: ${{ secrets.IIS_USERNAME }}
+          IIS_SERVER_PASSWORD: ${{ secrets.IIS_PASSWORD }}
         run: |
           $sourcePath = "FrontEnd_New_Design/build/*"
           $destinationPath = "C:/inetpub/crm-test"
