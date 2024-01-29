@@ -2,7 +2,6 @@
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
 
 name: Node.js CI
-
 on:
   push:
     branches:
@@ -24,23 +23,13 @@ jobs:
 
       - name: Install Dependencies
         run: cd FrontEnd_New_Design;  npm install --f;
-
       - name: Create New Folder
         run: cd FrontEnd_New_Design; mkdir build
-
       - name: Build React App
         run: npm run build --if-present;
         env:
           CI: false
         working-directory: FrontEnd_New_Design\build
-
-      - name: SSH into server and deploy
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          name: id_rsa_st-crm-secret
-          known_hosts: ${{ secrets.IIS_HOST }}
-          if_key_exists: fail
 
       - name: SSH into server and deploy
         uses: shimataro/ssh-key-action@v2
@@ -63,14 +52,14 @@ jobs:
           cp -R ${{ github.workspace }}/FrontEnd_New_Design/build/*
 
       - name: Deploy to IIS
-      run: |
-        $sourcePath = "FrontEnd_New_Design/build/*"
-        $destinationPath = "C:/inetpub/crm-test"
-        Copy-Item -Path $sourcePath -Destination $destinationPath -Recurse -Force
-      env:
-        IIS_SERVER_HOST: ${{ secrets.IIS_HOST }}
-        IIS_SERVER_USERNAME: ${{ secrets.IIS_USERNAME }}
-        IIS_SERVER_PASSWORD: ${{ secrets.IIS_PASSWORD }}
+        run: |
+          $sourcePath = "FrontEnd_New_Design/build/*"
+          $destinationPath = "C:/inetpub/crm-test"
+          Copy-Item -Path $sourcePath -Destination $destinationPath -Recurse -Force
+        env:
+          IIS_SERVER_HOST: ${{ secrets.IIS_HOST }}
+          IIS_SERVER_USERNAME: ${{ secrets.IIS_USERNAME }}
+          IIS_SERVER_PASSWORD: ${{ secrets.IIS_PASSWORD }}
 
       # deploy:
       #   runs-on: windows-latest
