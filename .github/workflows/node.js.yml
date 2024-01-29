@@ -58,7 +58,7 @@ jobs:
           IIS_SERVER_PASSWORD: ${{ secrets.IIS_PASSWORD }}
         run: |
           $sourcePath = "FrontEnd_New_Design/build/*"
-          $destinationPath = "C:/inetpub/crm-test"
+          $destinationPath = "C:/inetpub/crm-test/"
 
           if (!(Test-Path -Path $destinationPath -PathType Container)) {
             New-Item -ItemType Directory -Force -Path $destinationPath
