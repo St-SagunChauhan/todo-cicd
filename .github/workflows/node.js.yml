@@ -57,7 +57,7 @@ jobs:
           $destinationPath = "C:/inetpub/crm-test"
 
           if (!(Test-Path -Path $destinationPath -PathType Container)) {
-            New-Item -ItemType Directory -Force -Path $destinationPath
+            New-Item -ItemType Directory; cd FrontEnd_New_Design; -Force -Path $destinationPath
           }
 
           Copy-Item -Path $sourcePath -Destination $destinationPath -Recurse -Force
