@@ -50,66 +50,59 @@ jobs:
       #     IIS_SERVER_USERNAME: ${{ secrets.IIS_USERNAME }}
       #     IIS_SERVER_PASSWORD: ${{ secrets.IIS_PASSWORD }}
 
-  deploy:
-    runs-on: windows-latest
-    needs: build
-    steps:
       - name: Copy artifacts
         run: |
           cp -R ${{ github.workspace }}/FrontEnd_New_Design/build/*
 
       - name: Deploy to IIS
-        uses: webdeploy/webdeploy-action@v2
-        with:
-          server: ${{ secrets.IIS_HOST }} # Replace with your server address
-          username: ${{ secrets.IIS_USERNAME }}
-          password: ${{ secrets.IIS_PASSWORD }}
-          # site: "crmfrontend" # Replace with your IIS site name
-          action: "sync"
-          deploy_path: 'C:\inetpub\crm-test' # Replace with your IIS site root path
-          remove_files: true
-          # additional_params: '-setParam:name="IIS Web Application Name",value="YourAppName"'
+      run: |
+        $sourcePath = "FrontEnd_New_Design/build/*"
+        $destinationPath = "C:/inetpub/crm-test"
+        Copy-Item -Path $sourcePath -Destination $destinationPath -Recurse -Force
+      env:
+        IIS_SERVER_HOST: ${{ secrets.IIS_HOST }}
+        IIS_SERVER_USERNAME: ${{ secrets.IIS_USERNAME }}
+        IIS_SERVER_PASSWORD: ${{ secrets.IIS_PASSWORD }}
 
-        # - name: Copy artifacts
-        #   run: |
-        #     New-Item -ItemType Directory -Force -Path "C:/inetpub/crm-test"
-        #     Copy-Item -Path "${{ github.workspace }}/FrontEnd_New_Design/build/*" -Destination "C:/inetpub/crm-test" -Recurse
-        #   env:
-        #     IIS_SERVER_HOST: ${{ secrets.IIS_HOST }}
-        #     IIS_SERVER_USERNAME: ${{ secrets.IIS_USERNAME }}
-        #     IIS_SERVER_PASSWORD: ${{ secrets.IIS_PASSWORD }}
+    # deploy:
+    #   runs-on: windows-latest
+    #   needs: build
+    #   steps:
 
-        # - name: Deploy
-        #   run: |
-        #     git config --global user.name $user_name
-        #     git config --global user.email $user_email
-        #     git remote set-url origin https://${github_token}@github.com/${repository}
-        #     cd FrontEnd_New_Design; npm run deploy
-        #     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-        #   env:
-        #     user_name: "github-actions[bot]"
-        #     user_email: "github-actions[bot]@users.noreply.github.com"
-        #     github_token: ${{ secrets.ACTIONS_DEPLOY_ACCESS_TOKEN }}
-        #     repository: ${{ github.repository }}
+      # - name: Copy artifacts
+      #   run: |
+      #     New-Item -ItemType Directory -Force -Path "C:/inetpub/crm-test"
+      #     Copy-Item -Path "${{ github.workspace }}/FrontEnd_New_Design/build/*" -Destination "C:/inetpub/crm-test" -Recurse
+      #   env:
+      #     IIS_SERVER_HOST: ${{ secrets.IIS_HOST }}
+      #     IIS_SERVER_USERNAME: ${{ secrets.IIS_USERNAME }}
+      #     IIS_SERVER_PASSWORD: ${{ secrets.IIS_PASSWORD }}
 
-  # deploy:
-  #   runs-on: windows-latest
+      # - name: Deploy
+      #   run: |
+      #     git config --global user.name $user_name
+      #     git config --global user.email $user_email
+      #     git remote set-url origin https://${github_token}@github.com/${repository}
+      #     cd FrontEnd_New_Design; npm run deploy
+      #     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      #   env:
+      #     user_name: "github-actions[bot]"
+      #     user_email: "github-actions[bot]@users.noreply.github.com"
+      #     github_token: ${{ secrets.ACTIONS_DEPLOY_ACCESS_TOKEN }}
+      #     repository: ${{ github.repository }}
 
-  #   needs: build
+      # - name: Deploy to IIS
+      #   run: |
+      #     $sourcePath = "FrontEnd_New_Design/build/*"
+      #     $destinationPath = "C:/inetpub/crm-test"
+      #     Copy-Item -Path $sourcePath -Destination $destinationPath -Recurse -Force
+      #   shell: pwsh
 
-  #   steps:
-  #     - name: Deploy to IIS
-  #       run: |
-  #         $sourcePath = "FrontEnd_New_Design/build/*"
-  #         $destinationPath = "C:/inetpub/crm-test"
-  #         Copy-Item -Path $sourcePath -Destination $destinationPath -Recurse -Force
-  #       shell: pwsh
-
-  # - name: Deploy to IIS
-  #   uses: appleboy/scp-action@master
-  #   with:
-  #     host: ${{ secrets.IIS_HOST }}
-  #     username: ${{ secrets.IIS_USERNAME }}
-  #     password: ${{ secrets.IIS_PASSWORD }}
-  #     local: "build/*"
-  #     remote: "C:/inetpub/crm-test"
+      # - name: Deploy to IIS
+      #   uses: appleboy/scp-action@master
+      #   with:
+      #     host: ${{ secrets.IIS_HOST }}
+      #     username: ${{ secrets.IIS_USERNAME }}
+      #     password: ${{ secrets.IIS_PASSWORD }}
+      #     local: "build/*"
+      #     remote: "C:/inetpub/crm-test"
